@@ -3,6 +3,7 @@ package unit;
 
 import common.Functionality;
 import common.FunctionalityImpl;
+import common.Plugin;
 import common.PluginImpl;
 import org.junit.After;
 import org.junit.Assert;
@@ -10,6 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import server.dao.FunctionalityDAO;
 import server.dao.PluginDAO;
+import server.dao.utils.StatementBuilderFactory;
+import server.dao.utils.StatementDDLBuilder;
+import server.dao.utils.StatementDMLBuilder;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -17,18 +21,24 @@ import java.util.Date;
 
 public class FunctionalityDAOTest {
     private FunctionalityDAO functionalityDAO;
-    private PluginImpl plugin;
+    private Plugin plugin;
+
+    private StatementDDLBuilder ddl;
+    private StatementDMLBuilder dml;
+
 
     private void persistPlugin() throws SQLException {
         plugin = new PluginImpl(1L, "PLUGIN MOCK", "PLUGIN MOCK");
-        new PluginDAO().create(plugin);
+        new PluginDAO(ddl, dml).create(plugin);
     }
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
-        Class.forName ("oracle.jdbc.OracleDriver");
+        ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        dml = StatementBuilderFactory.getDMLBuilderInstance();
+
         persistPlugin();
-        functionalityDAO = new FunctionalityDAO();
+        functionalityDAO = new FunctionalityDAO(ddl, dml);
         functionalityDAO.create(new FunctionalityImpl("CREATE MAP", "CREATE MAP", new Date(), plugin));
     }
 
@@ -64,10 +74,17 @@ public class FunctionalityDAOTest {
     }
 
     @Test
-    public void shouldReturnFunctionalityById_1() throws SQLException {
+    public void shouldReturnFunctionalityById() throws SQLException {
         functionalityDAO.create(new FunctionalityImpl("CREATE MAP", "CREATE MAP", new Date(), new PluginImpl(1L)));
         Long id = functionalityDAO.lastId();
         Assert.assertEquals("CREATE MAP", functionalityDAO.findById(id).getName());
+
+    }
+
+    @Test
+    public void shouldReturnFunctionalityByName() throws SQLException {
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP NAME", "CREATE MAP", new Date(), new PluginImpl(1L)));
+        Assert.assertEquals("CREATE MAP NAME", functionalityDAO.findByName("CREATE MAP NAME").getName());
 
     }
 
@@ -113,6 +130,9 @@ public class FunctionalityDAOTest {
         functionalityDAO.deleteAllElements();
         Assert.assertTrue(functionalityDAO.listFunctionalities().isEmpty());
 
-        new PluginDAO().deleteAllElements();
+        new PluginDAO(ddl ,dml).deleteAllElements();
+
+        ddl.close();
+        dml.close();
     }
 }

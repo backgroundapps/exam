@@ -9,6 +9,10 @@ public class UserImpl implements User {
 
     public UserImpl() {}
 
+    public UserImpl(Long id) {
+        this.id = id;
+    }
+
     public UserImpl(String login, String fullName, String status, String currentManagement) {
         this.login = login;
         this.fullName = fullName;

@@ -21,6 +21,8 @@ public class StatementDMLBuilder implements Statementable{
 
     @Override
     public Statementable addSQL(String sql) {
+        this.preparedStatement = null;
+
         this.sql = sql;
         return this;
     }

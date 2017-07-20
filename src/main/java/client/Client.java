@@ -26,7 +26,10 @@ public class Client {
   public static void main(String[] args) {
     try {
       List<User> users = Client.getServer().getUsers();
-      JOptionPane.showMessageDialog(null, users.size());
+      //JOptionPane.showMessageDialog(null, users.size());
+      MyFrame f = new MyFrame();
+      f.setVisible(true);
+
       System.out.println(users.size());
     }
     catch (Exception e) {

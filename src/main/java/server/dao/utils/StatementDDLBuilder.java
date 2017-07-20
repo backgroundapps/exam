@@ -20,6 +20,8 @@ public class StatementDDLBuilder implements Statementable{
 
     @Override
     public Statementable addSQL(String sql) {
+        this.preparedStatement = null;
+
         this.sql = sql;
         return this;
     }

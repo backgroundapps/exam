@@ -11,6 +11,16 @@ public class FunctionalityImpl implements Functionality {
 
     public FunctionalityImpl(){}
 
+    public FunctionalityImpl(Long id){
+        this.id = id;
+    }
+
+    public FunctionalityImpl(String name, String description, Plugin plugin ){
+        this.name = name;
+        this.description = description;
+        this.plugin = plugin;
+    }
+
     public FunctionalityImpl(String name, String description, Date startDate, Plugin plugin ){
         this.name = name;
         this.description = description;

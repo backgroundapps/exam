@@ -8,6 +8,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import server.dao.PluginDAO;
+import server.dao.utils.StatementBuilderFactory;
+import server.dao.utils.StatementDDLBuilder;
+import server.dao.utils.StatementDMLBuilder;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -15,11 +18,16 @@ import java.util.Date;
 
 public class PluginDAOTest {
     private PluginDAO pluginDAO;
+    private StatementDDLBuilder ddl;
+    private StatementDMLBuilder dml;
+
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
-        Class.forName ("oracle.jdbc.OracleDriver");
-        pluginDAO = new PluginDAO();
+        ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        dml = StatementBuilderFactory.getDMLBuilderInstance();
+
+        pluginDAO = new PluginDAO(ddl, dml);
         pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
     }
 
@@ -99,6 +107,9 @@ public class PluginDAOTest {
     public void removePlugins() throws  SQLException{
         pluginDAO.deleteAllElements();
         Assert.assertTrue(pluginDAO.listPlugins().isEmpty());
+
+        dml.close();
+        ddl.close();
     }
 
 

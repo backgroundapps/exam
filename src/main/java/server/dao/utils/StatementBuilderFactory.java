@@ -5,8 +5,6 @@ public class StatementBuilderFactory {
         return new StatementDDLBuilder();
     }
 
-    public static StatementDMLBuilder getDMLBuilderInstance(){
-        return new StatementDMLBuilder();
-    }
+    public static StatementDMLBuilder getDMLBuilderInstance(){  return new StatementDMLBuilder();  }
 
 }

@@ -2,6 +2,7 @@ package common;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,6 +21,6 @@ public interface ServerInterface extends Remote {
    * @return lista com os usuários
    * @throws RemoteException .
    */
-  List<User> getUsers() throws RemoteException;
+  List<User> getUsers() throws RemoteException, SQLException;
 
 }

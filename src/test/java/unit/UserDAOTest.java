@@ -5,16 +5,24 @@ import common.User;
 import common.UserImpl;
 import org.junit.*;
 import server.dao.UserDAO;
+import server.dao.utils.StatementBuilderFactory;
+import server.dao.utils.StatementDDLBuilder;
+import server.dao.utils.StatementDMLBuilder;
 
 import java.sql.SQLException;
 
 
 public class UserDAOTest {
     private UserDAO userDAO;
+    private StatementDMLBuilder dml;
+    private StatementDDLBuilder ddl;
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
-        userDAO = new UserDAO();
+        ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        dml = StatementBuilderFactory.getDMLBuilderInstance();
+
+        userDAO = new UserDAO(ddl, dml);
         userDAO.create(new UserImpl("ARIOSVALDO", "ARIOSVALDO LENNON", "ACTIVE", "Y"));
     }
 
@@ -110,6 +118,10 @@ public class UserDAOTest {
     public void deleteAllElements() throws SQLException {
         userDAO.deleteAllElements();
         Assert.assertTrue(userDAO.listUsers().isEmpty());
+
+        dml.close();
+        ddl.close();
+
     }
 
 

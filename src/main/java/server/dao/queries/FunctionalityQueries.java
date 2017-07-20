@@ -24,6 +24,15 @@ public class FunctionalityQueries {
         return "SELECT * FROM FUNCTIONALITIES WHERE ID = ?";
     }
 
+    /**
+     * String query with one parameter
+     * 1 - NAME
+     * @return
+     */
+    public static String selectByName(){
+        return "SELECT * FROM FUNCTIONALITIES WHERE NAME = ?";
+    }
+
     public static String selectAll(){
         return "SELECT * FROM FUNCTIONALITIES";
     }
@@ -33,10 +42,11 @@ public class FunctionalityQueries {
     }
 
     /**
-     * String query with 3 parameters
+     * String query with 4 parameters
      * 1 - ID
      * 2 - NAME
      * 3 - DESCRIPTION
+     * 4 - PLUGIN_ID
      *
      * @return
      */

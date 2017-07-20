@@ -4,13 +4,15 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import common.ServerInterface;
 import common.User;
+import server.process.UserProcess;
 
-  public class Server implements ServerInterface {
+public class Server implements ServerInterface {
 
   public static void main(String args[]) {
     try {
@@ -33,8 +35,7 @@ import common.User;
 
 */
   @Override
-  public List<User> getUsers() throws RemoteException {
-    List<User> users = new ArrayList<>();
-    return users;
+  public List<User> getUsers() throws RemoteException, SQLException {
+    return new UserProcess().listUsers();
   }
 }
