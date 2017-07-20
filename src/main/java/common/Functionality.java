@@ -3,9 +3,6 @@ package common;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by Samsung on 13/07/2017.
- */
 public interface Functionality extends Serializable {
 
     Long getId();
@@ -23,4 +20,8 @@ public interface Functionality extends Serializable {
     Date getStartDate();
 
     void setStartDate(Date startDate);
+
+    Plugin getPlugin();
+
+    void setPlugin(Plugin plugin);
 }

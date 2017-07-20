@@ -2,81 +2,66 @@ package server.dao;
 
 import common.User;
 import common.UserImpl;
+import server.dao.utils.StatementBuilderFactory;
+import server.dao.utils.Statementable;
 import server.factories.UserFactory;
-import server.dao.conf.ConnectionFactory;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static server.dao.queries.UserQueries.*;
+
 public class UserDAO {
-    public enum FIELDS { ID, LOGIN, FULL_NAME, STATUS, CURRENT_MANAGEMENT }
-    private Connection con;
 
     public List<User> listUsers() throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
-        ResultSet rst = null;
+        Statementable ddl = StatementBuilderFactory.getDDLBuilderInstance();
 
         try{
-            ps = con.prepareStatement("SELECT * FROM USERS");
-            rst = ps.executeQuery();
+            ddl.addSQL(selectAll()).build();
             List<User> list = new ArrayList<>();
-            while(rst.next()){
+            while(ddl.getResult().next()){
                 //User user = new UserImpl(rst.getLong(FIELDS.ID.name()), rst.getString(FIELDS.LOGIN.name()), rst.getString(FIELDS.FULL_NAME.name()), rst.getString(FIELDS.STATUS.name()), rst.getString(FIELDS.CURRENT_MANAGEMENT.name()));
-                list.add(UserFactory.getUserByResultSet(rst));
+                list.add(UserFactory.getUserByResultSet(ddl.getResult()));
             }
             return list;
 
         }finally {
-            rst.close();
-            ps.close();
-            con.close();
+            ddl.close();
         }
     }
 
     public Long lastId() throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rst = null;
+        Statementable ddl = StatementBuilderFactory.getDDLBuilderInstance();
         Long lastID = null;
 
         try{
-            ps = con.prepareStatement("SELECT MAX(ID) FROM USERS");
-            rst = ps.executeQuery();
-            while(rst.next()){
-                lastID = rst.getLong(1);
+            ddl.addSQL(maxId()).build();
+            while(ddl.getResult().next()){
+                lastID = ddl.getResult().getLong(1);
             }
             return lastID;
 
         }finally {
-            rst.close();
-            ps.close();
-            con.close();
+            ddl.close();
         }
     }
 
     public Long numberOfUsers() throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
-        ResultSet rst = null;
+        Statementable ddl = StatementBuilderFactory.getDDLBuilderInstance();
         Long id = null;
 
         try{
-            ps = con.prepareStatement("SELECT COUNT(ID) FROM USERS");
-            rst = ps.executeQuery();
-            while(rst.next()){
-                id = rst.getLong(1);
+            ddl.addSQL(countId()).build();
+
+            while(ddl.getResult().next()){
+                id = ddl.getResult().getLong(1);
             }
             return id;
 
         }finally {
-            rst.close();
-            ps.close();
-            con.close();
+            ddl.close();
         }
     }
 
@@ -86,138 +71,110 @@ public class UserDAO {
     }
 
     public User findById(long id) throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
-        ResultSet rst = null;
+        Statementable ddl = StatementBuilderFactory.getDDLBuilderInstance();
         User user = null;
 
         try{
-            ps = con.prepareStatement("SELECT * FROM USERS WHERE ID = ?");
-            ps.setLong(1, id);
-
-            rst = ps.executeQuery();
-            while(rst.next()){
-                user = UserFactory.getUserByResultSet(rst);
+            ddl.addSQL(selectById());
+            ddl.preparingStatement().setLong(1, id);
+            ddl.build();
+            while(ddl.getResult().next()){
+                user = UserFactory.getUserByResultSet(ddl.getResult());
             }
             return user;
 
         }finally {
-            rst.close();
-            ps.close();
-            con.close();
+            ddl.close();
         }
     }
 
 
     public boolean create(UserImpl user) throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
-
-        String sql = "INSERT INTO USERS (ID, LOGIN, FULL_NAME, STATUS, CURRENT_MANAGEMENT) VALUES (?, ?, ?, ?, ?)";
+        Statementable dml = StatementBuilderFactory.getDMLBuilderInstance();
 
         try{
-            ps = con.prepareStatement(sql);
-            ps.setLong(1, nextId());
-            ps.setString(2, user.getLogin());
-            ps.setString(3, user.getFullName());
-            ps.setString(4, user.getStatus());
-            ps.setString(5, user.getCurrentManagement());
+            dml.addSQL(insert());
+            dml.preparingStatement().setLong(1, nextId());
+            dml.preparingStatement().setString(2, user.getLogin());
+            dml.preparingStatement().setString(3, user.getFullName());
+            dml.preparingStatement().setString(4, user.getStatus());
+            dml.preparingStatement().setString(5, user.getCurrentManagement());
 
             //executeUpdate: return number of rows inserted
-            return ps.executeUpdate() > 0;
+            return dml.build().getResultValue() > 0;
 
         }finally {
-            ps.close();
-            con.close();
+            dml.close();
         }
     }
 
     public boolean update(UserImpl updatedUser, Long id) throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
-
+        Statementable dml = StatementBuilderFactory.getDMLBuilderInstance();
         try{
             //First get the current user values
             User oldUser = findById(id);
 
-                String sql = "UPDATE USERS SET LOGIN=?, FULL_NAME=?, STATUS=? ,CURRENT_MANAGEMENT=? WHERE ID=?";
-            ps = con.prepareStatement(sql);
-            ps.setString(1, updatedUser.getLogin() != null ? updatedUser.getLogin() : oldUser.getLogin());
-            ps.setString(2, updatedUser.getFullName() != null ? updatedUser.getFullName() : oldUser.getFullName());
-            ps.setString(3, updatedUser.getStatus() != null ? updatedUser.getStatus() : oldUser.getStatus());
-            ps.setString(4, updatedUser.getCurrentManagement() != null ? updatedUser.getCurrentManagement() : oldUser.getCurrentManagement());
-            ps.setLong(5, id);
+            dml.addSQL(updateById());
+            dml.preparingStatement().setString(1, updatedUser.getLogin() != null ? updatedUser.getLogin() : oldUser.getLogin());
+            dml.preparingStatement().setString(2, updatedUser.getFullName() != null ? updatedUser.getFullName() : oldUser.getFullName());
+            dml.preparingStatement().setString(3, updatedUser.getStatus() != null ? updatedUser.getStatus() : oldUser.getStatus());
+            dml.preparingStatement().setString(4, updatedUser.getCurrentManagement() != null ? updatedUser.getCurrentManagement() : oldUser.getCurrentManagement());
+            dml.preparingStatement().setLong(5, id);
 
             //executeUpdate: return number of rows inserted
-            return ps.executeUpdate() > 0;
+            return dml.build().getResultValue() > 0;
 
         }finally {
-            ps.close();
-            con.close();
+            dml.close();
         }
     }
 
 
     public User lastUser() throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
-        ResultSet rst = null;
-        User user = null;
-
-        try{
-            Long id = lastId();
-            ps = con.prepareStatement("SELECT * FROM USERS WHERE ID = ?");
-            ps.setLong(1, id);
-
-            rst = ps.executeQuery();
-            while(rst.next()){
-                user = UserFactory.getUserByResultSet(rst);
-
-            }
-            return user;
-
-        }finally {
-            rst.close();
-            ps.close();
-            con.close();
-        }
+        return findById(lastId());
     }
 
     public boolean cancelUser(Long id) throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
+        Statementable dml = StatementBuilderFactory.getDMLBuilderInstance();
 
         try{
-            String sql = "UPDATE USERS SET STATUS=? WHERE ID=?";
-            ps = con.prepareStatement(sql);
-            ps.setString(1, "INACTIVE");
-            ps.setLong(2, id);
+            dml.addSQL(updateStatusById());
+            dml.preparingStatement().setString(1, "INACTIVE");
+            dml.preparingStatement().setLong(2, id);
 
             //executeUpdate: return number of rows updated
-            return ps.executeUpdate() > 0;
+            return dml.build().getResultValue() > 0;
 
         }finally {
-            ps.close();
-            con.close();
+            dml.close();
+
         }
     }
 
     public boolean delete(Long id) throws SQLException {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement ps =null;
+        Statementable dml = StatementBuilderFactory.getDMLBuilderInstance();
 
         try{
-            String sql = "DELETE FROM USERS WHERE ID=?";
-            ps = con.prepareStatement(sql);
-            ps.setLong(1, id);
-
-            //executeUpdate: return number of rows REMOVED
-            return ps.executeUpdate() > 0;
+            dml.addSQL(deleteById());
+            dml.preparingStatement().setLong(1, id);
+            return dml.build().getResultValue() > 0;
 
         }finally {
-            ps.close();
-            con.close();
+            dml.close();
         }
     }
+
+    public boolean deleteAllElements() throws  SQLException{
+        Statementable dml = StatementBuilderFactory.getDMLBuilderInstance();
+
+        try{
+            dml.addSQL(deleteAll());
+            return dml.build().getResultValue() > 0;
+
+        }finally {
+            dml.close();
+        }
+    }
+
 
 }

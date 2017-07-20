@@ -3,9 +3,7 @@ package unit;
 
 import common.User;
 import common.UserImpl;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import server.dao.UserDAO;
 
 import java.sql.SQLException;
@@ -16,7 +14,6 @@ public class UserDAOTest {
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
-        Class.forName ("oracle.jdbc.OracleDriver");
         userDAO = new UserDAO();
         userDAO.create(new UserImpl("ARIOSVALDO", "ARIOSVALDO LENNON", "ACTIVE", "Y"));
     }
@@ -68,7 +65,7 @@ public class UserDAOTest {
     @Test
     public void shouldAddOneUser() throws SQLException {
         userDAO.create(new UserImpl("BIL", "BILLY MENDY", "ACTIVE", "Y"));
-        Assert.assertEquals("BIL", userDAO.listUsers().get(userDAO.numberOfUsers().intValue() - 1).getLogin());
+        Assert.assertEquals("BIL", userDAO.lastUser().getLogin());
 
     }
 
@@ -107,6 +104,12 @@ public class UserDAOTest {
 
         userDAO.delete(userDAO.lastId());
         Assert.assertEquals(user.getLogin(), userDAO.lastUser().getLogin());
+    }
+
+    @After
+    public void deleteAllElements() throws SQLException {
+        userDAO.deleteAllElements();
+        Assert.assertTrue(userDAO.listUsers().isEmpty());
     }
 
 

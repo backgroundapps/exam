@@ -1,16 +1,20 @@
 package server.factories;
 
-import common.Functionality;
-import common.FunctionalityImpl;
-import server.dao.FunctionalityDAO;
-import server.dao.UserDAO;
+import common.Plugin;
+import common.PluginImpl;
+import server.dao.queries.PluginQueries;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PluginFactory {
 
-    public static Functionality getFunctionalityByResultSet(ResultSet rst) throws SQLException {
-        return new FunctionalityImpl(rst.getLong(UserDAO.FIELDS.ID.name()), rst.getString(FunctionalityDAO.FIELDS.NAME.name()), rst.getString(FunctionalityDAO.FIELDS.DESCRIPTION.name()), rst.getDate(FunctionalityDAO.FIELDS.START_DATE.name()));
+    public static Plugin getPluginByResultSet(ResultSet rst) throws SQLException {
+        return new PluginImpl(
+                rst.getLong(PluginQueries.FIELDS.ID.name()),
+                rst.getString(PluginQueries.FIELDS.NAME.name()),
+                rst.getString(PluginQueries.FIELDS.DESCRIPTION.name()),
+                rst.getDate(PluginQueries.FIELDS.START_DATE.name())
+        );
     }
 }

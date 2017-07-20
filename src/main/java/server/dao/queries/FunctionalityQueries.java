@@ -1,18 +1,18 @@
 package server.dao.queries;
 
-public class PluginQueries {
-    public enum FIELDS { ID, NAME, DESCRIPTION, START_DATE}
+public class FunctionalityQueries {
+    public enum FIELDS { ID, NAME, DESCRIPTION, START_DATE, PLUGIN_ID}
     /**
      * String query with one parameter
      * 1 - ID
      * @return
      */
     public static String deleteById(){
-        return "DELETE FROM PLUGINS WHERE ID=?";
+        return "DELETE FROM FUNCTIONALITIES WHERE ID=?";
     }
 
     public static String maxId(){
-        return "SELECT MAX(ID) FROM PLUGINS";
+        return "SELECT MAX(ID) FROM FUNCTIONALITIES";
     }
 
     /**
@@ -21,15 +21,15 @@ public class PluginQueries {
      * @return
      */
     public static String selectById(){
-        return "SELECT * FROM PLUGINS WHERE ID = ?";
+        return "SELECT * FROM FUNCTIONALITIES WHERE ID = ?";
     }
 
     public static String selectAll(){
-        return "SELECT * FROM PLUGINS";
+        return "SELECT * FROM FUNCTIONALITIES";
     }
 
     public static String countId(){
-        return "SELECT COUNT(ID) FROM PLUGINS";
+        return "SELECT COUNT(ID) FROM FUNCTIONALITIES";
     }
 
     /**
@@ -41,7 +41,7 @@ public class PluginQueries {
      * @return
      */
     public static String insert(){
-        return "INSERT INTO PLUGINS (ID, NAME, DESCRIPTION) VALUES (?, ?, ?)";
+        return "INSERT INTO FUNCTIONALITIES (ID, NAME, DESCRIPTION, PLUGIN_ID) VALUES (?, ?, ?, ?)";
     }
 
     /**
@@ -50,15 +50,15 @@ public class PluginQueries {
      * 2 - DESCRIPTION
      * 3 - START_DATE
      *
-     * 4 - ID: Plugin in the where
+     * 4 - ID: Functionality in the where
      * @return
      */
     public static String updateById(){
-        return "UPDATE PLUGINS SET NAME=?, DESCRIPTION=?, START_DATE=? WHERE ID=?";
+        return "UPDATE FUNCTIONALITIES SET NAME=?, DESCRIPTION=?, START_DATE=? WHERE ID=?";
     }
 
     public static String deleteAll(){
-        return "DELETE FROM PLUGINS";
+        return "DELETE FROM FUNCTIONALITIES";
     }
 
 }

@@ -2,28 +2,29 @@ package common;
 
 import java.util.Date;
 
-/**
- * Created by Samsung on 14/07/2017.
- */
 public class FunctionalityImpl implements Functionality {
     private Long id;
     private String name;
     private String description;
     private Date startDate;
+    private Plugin plugin;
 
     public FunctionalityImpl(){}
 
-    public FunctionalityImpl(String name, String description, Date startDate ){
+    public FunctionalityImpl(String name, String description, Date startDate, Plugin plugin ){
         this.name = name;
         this.description = description;
         this.startDate = startDate;
+        this.plugin = plugin;
     }
 
-    public FunctionalityImpl(Long id, String name, String description, Date startDate ){
+    public FunctionalityImpl(Long id, String name, String description, Date startDate, Plugin plugin){
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
+        this.plugin = plugin;
+
     }
 
     @Override
@@ -47,11 +48,11 @@ public class FunctionalityImpl implements Functionality {
         this.description = description;
     }
     @Override
-    public Date getStartDate() {
-        return startDate;
-    }
+    public Date getStartDate() { return startDate; }
     @Override
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+    public void setStartDate(Date startDate) { this.startDate = startDate; }
+    @Override
+    public Plugin getPlugin() { return plugin; }
+    @Override
+    public void setPlugin(Plugin plugin) { this.plugin = plugin; }
 }

@@ -1,14 +1,26 @@
 package common;
 
 import java.util.Date;
+import java.util.List;
 
 public class PluginImpl implements Plugin {
     private Long id;
     private String name;
     private String description;
     private Date startDate;
+    private List<Functionality> functionalities;
 
     public PluginImpl(){}
+
+    public PluginImpl(Long id){
+        this.id= id;
+    }
+
+    public PluginImpl(Long id, String name, String description){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     public PluginImpl(String name, String description, Date startDate){
         this.name = name;
@@ -51,4 +63,8 @@ public class PluginImpl implements Plugin {
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+    @Override
+    public List<Functionality> getFunctionalities() { return functionalities; }
+    @Override
+    public void setFunctionalities(List<Functionality> functionalities) { this.functionalities = functionalities; }
 }
