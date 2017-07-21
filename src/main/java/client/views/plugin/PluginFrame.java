@@ -1,4 +1,4 @@
-package client.view.plugin;
+package client.views.plugin;
 
 import client.Client;
 
@@ -32,13 +32,13 @@ public class PluginFrame extends JFrame {
             }
         });
 
-        JMenuItem userMenuItem = new JMenuItem("Number Of Users", null);
+        JMenuItem userMenuItem = new JMenuItem("Number Of Plugins", null);
         userMenuItem.setMnemonic(KeyEvent.VK_E);
-        userMenuItem.setToolTipText("User application");
+        userMenuItem.setToolTipText("Plugin application");
         userMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 try {
-                    JOptionPane.showMessageDialog(null, Client.getServer().getUsers());
+                    JOptionPane.showMessageDialog(null, Client.getServer().getPlugins().size());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {

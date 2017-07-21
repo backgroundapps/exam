@@ -1,4 +1,4 @@
-package client.view.user;
+package client.views.user;
 
 import client.Client;
 
@@ -38,7 +38,7 @@ public class UserFrame extends JFrame {
         userMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 try {
-                    JOptionPane.showMessageDialog(null, Client.getServer().getUsers());
+                    JOptionPane.showMessageDialog(null, Client.getServer().getUsers().size());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {
@@ -65,6 +65,6 @@ public class UserFrame extends JFrame {
         setContentPane(l);
         setSize(300, 200);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 }

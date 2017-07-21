@@ -1,4 +1,4 @@
-package client.view.functionality;
+package client.views.permission;
 
 import client.Client;
 
@@ -10,9 +10,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class FunctionalityFrame extends JFrame {
+public class PermissionFrame extends JFrame {
 
-    public FunctionalityFrame() {
+    public PermissionFrame() {
         initUI();
     }
 
@@ -20,7 +20,7 @@ public class FunctionalityFrame extends JFrame {
 
         JMenuBar menubar = new JMenuBar();
 
-        JMenu file = new JMenu("Functionality Manager");
+        JMenu file = new JMenu("Permission Manager");
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem exiteMenuItem = new JMenuItem("Exit", null);
@@ -32,13 +32,13 @@ public class FunctionalityFrame extends JFrame {
             }
         });
 
-        JMenuItem userMenuItem = new JMenuItem("Number Of Users", null);
+        JMenuItem userMenuItem = new JMenuItem("Number Of Permissions Registered", null);
         userMenuItem.setMnemonic(KeyEvent.VK_E);
-        userMenuItem.setToolTipText("User application");
+        userMenuItem.setToolTipText("Permissions application");
         userMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 try {
-                    JOptionPane.showMessageDialog(null, Client.getServer().getUsers());
+                    JOptionPane.showMessageDialog(null, Client.getServer().getPermissions().size());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {
