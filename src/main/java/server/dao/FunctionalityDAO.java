@@ -21,6 +21,11 @@ public class FunctionalityDAO {
 
     public FunctionalityDAO() {    }
 
+    public FunctionalityDAO(StatementDDLBuilder ddl) {
+        this.ddl = ddl;
+    }
+
+
     public FunctionalityDAO(StatementDDLBuilder ddl, StatementDMLBuilder dml) {
         this.ddl = ddl;
         this.dml = dml;

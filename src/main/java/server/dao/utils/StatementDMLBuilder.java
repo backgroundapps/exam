@@ -29,7 +29,10 @@ public class StatementDMLBuilder implements Statementable{
 
     @Override
     public void close() throws SQLException{
-        this.preparedStatement.close();
+        if(this.preparedStatement != null && !this.preparedStatement.isClosed()){
+            this.preparedStatement.close();
+        }
+
         if(this.connection != null && !this.connection.isClosed()){
             this.connection.close();
         }

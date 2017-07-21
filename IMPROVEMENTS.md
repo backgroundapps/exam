@@ -4,3 +4,4 @@ Improvement list:
 2 - create a pool connection or set a pool on oracle - when stress the update methods we have problems with the connection.
 3 - create tests for Builders created
 4 - Separate the remote interfaces to start each one in their context
+

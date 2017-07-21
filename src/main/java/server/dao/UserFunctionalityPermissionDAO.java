@@ -80,6 +80,13 @@ public class UserFunctionalityPermissionDAO {
             return dml.build().getResultValue() > 0;
     }
 
+    public boolean removePermission(User user, Functionality functionality) throws SQLException {
+        dml.addSQL(deleteByUserIdAndFunctionalityId());
+        dml.preparingStatement().setLong(1, user.getId());
+        dml.preparingStatement().setLong(2, functionality.getId());
+        return dml.build().getResultValue() > 0;
+    }
+
     public boolean deleteAllElements() throws SQLException {
         dml.addSQL(deleteAll());
         return dml.build().getResultValue() > 0;

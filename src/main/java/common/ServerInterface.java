@@ -21,6 +21,15 @@ public interface ServerInterface extends Remote {
    * @return lista com os usuários
    * @throws RemoteException .
    */
-  List<User> getUsers() throws RemoteException, SQLException;
+  List<User> getUser() throws RemoteException, SQLException;
+
+  Long getNumberOfUsers() throws RemoteException, SQLException;
+
+  List<Functionality> getFunctionalities() throws RemoteException, SQLException;
+
+  List<Plugin> getPlugins() throws RemoteException, SQLException;
+
+  List<UserFunctionality> getPermissions() throws RemoteException, SQLException;
+
 
 }

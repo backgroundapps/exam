@@ -11,9 +11,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class UserFrame extends JFrame {
+public class LoginFrame extends JFrame {
 
-    public UserFrame() {
+    public LoginFrame() {
         initUI();
     }
 
@@ -46,25 +46,8 @@ public class UserFrame extends JFrame {
             }
         });
 
-        JMenuItem registerMenuItem = new JMenuItem("Register", null);
-        registerMenuItem.setMnemonic(KeyEvent.VK_E);
-        registerMenuItem.setToolTipText("User application");
-        registerMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    JOptionPane.showMessageDialog(null, Client.getServer().getNumberOfUsers());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (NotBoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         file.add(userMenuItem);
-        file.add(registerMenuItem);
         file.add(exiteMenuItem);
 
         menubar.add(file);

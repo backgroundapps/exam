@@ -21,6 +21,12 @@ public class PluginDAO {
     public PluginDAO() {
     }
 
+    public PluginDAO(StatementDDLBuilder ddl) {
+        this.ddl = ddl;
+    }
+
+
+
     public PluginDAO(StatementDDLBuilder ddl, StatementDMLBuilder dml) {
         this.ddl = ddl;
         this.dml = dml;

@@ -41,6 +41,10 @@ public class UserFunctionalityPermissionQueries {
         return "SELECT * FROM USERS_FUNC_PERMISSIONS WHERE USER_ID = ?";
     }
 
+    public static String deleteByUserIdAndFunctionalityId(){
+        return "DELETE FROM USERS_FUNC_PERMISSIONS WHERE USER_ID = ? AND FUNCTIONALITY_ID = ?";
+    }
+
     public static String deleteAll(){
         return "DELETE FROM USERS_FUNC_PERMISSIONS";
     }

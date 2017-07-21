@@ -1,15 +1,15 @@
 package client;
 
+import client.views.user.BoxLayoutDemo;
+import common.ServerInterface;
+import common.User;
+
+import javax.swing.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
-
-import common.ServerInterface;
-import common.User;
-
-import javax.swing.*;
 
 public class Client {
 
@@ -25,12 +25,9 @@ public class Client {
 
   public static void main(String[] args) {
     try {
-      List<User> users = Client.getServer().getUsers();
-      //JOptionPane.showMessageDialog(null, users.size());
-      MyFrame f = new MyFrame();
+      MainFrame f = new MainFrame();
       f.setVisible(true);
 
-      System.out.println(users.size());
     }
     catch (Exception e) {
       System.err.println("Client exception: " + e.toString());

@@ -3,7 +3,6 @@ package unit;
 
 import common.*;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import server.dao.FunctionalityDAO;
@@ -12,7 +11,7 @@ import server.dao.UserDAO;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
-import server.dao.utils.UserFunctionalityPermissionDAO;
+import server.dao.UserFunctionalityPermissionDAO;
 
 import static org.junit.Assert.*;
 
@@ -94,6 +93,11 @@ public class UserFunctionalityPermissionDAOTest {
         assertTrue(dao.addPermission(user, functionality));
     }
 
+    @Test
+    public void shouldRemovePermission() throws SQLException {
+        Functionality functionality = functionalityDAO.findByName("CREATE");
+        assertTrue(dao.removePermission(user, functionality));
+    }
 
     @After
     public void deleteAllElements() throws SQLException {

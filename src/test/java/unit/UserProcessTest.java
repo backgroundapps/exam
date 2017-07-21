@@ -3,88 +3,87 @@ package unit;
 
 import common.User;
 import common.UserImpl;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import server.dao.UserDAO;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
+import server.process.UserProcess;
 
 import java.sql.SQLException;
 
 
 public class UserProcessTest {
-    private UserDAO userDAO;
-    private StatementDMLBuilder dml;
-    private StatementDDLBuilder ddl;
+    private UserProcess userProcess;
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
-        ddl = StatementBuilderFactory.getDDLBuilderInstance();
-        dml = StatementBuilderFactory.getDMLBuilderInstance();
-
-        userDAO = new UserDAO(ddl, dml);
-        userDAO.create(new UserImpl("ARIOSVALDO", "ARIOSVALDO LENNON", "ACTIVE", "Y"));
+        userProcess = new UserProcess();
+        userProcess.create(new UserImpl("ARIOSVALDO", "ARIOSVALDO LENNON", "ACTIVE", "Y"));
     }
 
     @Test
     public void shouldReturnNumberOfUsers() throws SQLException {
-        Assert.assertNotNull(userDAO.numberOfUsers());
+        Assert.assertNotNull(userProcess.getNumberOfUsers());
     }
 
     @Test
     public void shouldReturnSomeOne() throws SQLException {
-        Assert.assertFalse(userDAO.listUsers().isEmpty());
-        Assert.assertNotNull(userDAO.listUsers().get(0).getLogin());
+        Assert.assertFalse(userProcess.getUsers().isEmpty());
+        Assert.assertNotNull(userProcess.getUsers().get(0).getLogin());
 
     }
 
     @Test
     public void shouldReturnLastUserID() throws SQLException {
-        userDAO.create(new UserImpl("DE_MENO", "DE MENO", "ACTIVE", "Y"));
-        userDAO.create(new UserImpl("ZE_PEQUENO", "ZE PEQUENO", "ACTIVE", "Y"));
+        userProcess.create(new UserImpl("DE_MENO", "DE MENO", "ACTIVE", "Y"));
+        userProcess.create(new UserImpl("ZE_PEQUENO", "ZE PEQUENO", "ACTIVE", "Y"));
 
-        User user = userDAO.lastUser();
-        Assert.assertEquals(user.getId(), userDAO.lastId());
+        User user = userProcess.lastUser();
+        Assert.assertEquals(user.getId(), userProcess.lastId());
 
     }
 
     @Test
     public void shouldReturnLastUser() throws SQLException {
-        userDAO.create(new UserImpl("ABADIAS", "ABADIAS ZATTA", "ACTIVE", "Y"));
-        userDAO.create(new UserImpl("COTEFILL", "COTEFILL ZATTA", "ACTIVE", "Y"));
+        userProcess.create(new UserImpl("ABADIAS", "ABADIAS ZATTA", "ACTIVE", "Y"));
+        userProcess.create(new UserImpl("COTEFILL", "COTEFILL ZATTA", "ACTIVE", "Y"));
 
-        Assert.assertEquals("COTEFILL", userDAO.lastUser().getLogin());
+        Assert.assertEquals("COTEFILL", userProcess.lastUser().getLogin());
 
     }
 
     @Test
     public void shouldReturnUserById_1() throws SQLException {
-        userDAO.create(new UserImpl("PILDAS", "PILDAS ZATTA", "ACTIVE", "Y"));
-        Long id = userDAO.lastId();
-        Assert.assertEquals("PILDAS", userDAO.findById(id).getLogin());
+        userProcess.create(new UserImpl("PILDAS", "PILDAS ZATTA", "ACTIVE", "Y"));
+        Long id = userProcess.lastId();
+        Assert.assertEquals("PILDAS", userProcess.findById(id).getLogin());
 
     }
 
     @Test
     public void shouldReturnNextId() throws SQLException {
-        Assert.assertEquals(new Long(userDAO.lastId() + 1), userDAO.nextId());
+        Assert.assertEquals(new Long(userProcess.lastId() + 1), userProcess.nextId());
     }
 
     @Test
     public void shouldAddOneUser() throws SQLException {
-        userDAO.create(new UserImpl("BIL", "BILLY MENDY", "ACTIVE", "Y"));
-        Assert.assertEquals("BIL", userDAO.lastUser().getLogin());
+        userProcess.create(new UserImpl("BIL", "BILLY MENDY", "ACTIVE", "Y"));
+        Assert.assertEquals("BIL", userProcess.lastUser().getLogin());
 
     }
 
     @Test
     public void shouldUpdateOneUser() throws SQLException {
-        userDAO.create(new UserImpl("BOB", "BOB ZATTA", "ACTIVE", "Y"));
-        Assert.assertEquals("BOB", userDAO.lastUser().getLogin());
+        userProcess.create(new UserImpl("BOB", "BOB ZATTA", "ACTIVE", "Y"));
+        Assert.assertEquals("BOB", userProcess.lastUser().getLogin());
 
-        userDAO.update(new UserImpl(null, null, "INACTIVE", "N"), userDAO.lastId());
+        userProcess.update(new UserImpl(null, null, "INACTIVE", "N"), userProcess.lastId());
 
-        User user = userDAO.findById(userDAO.lastId());
+        User user = userProcess.findById(userProcess.lastId());
 
         Assert.assertEquals("BOB", user.getLogin());
         Assert.assertEquals("BOB ZATTA", user.getFullName());
@@ -95,32 +94,37 @@ public class UserProcessTest {
 
     @Test
     public void shouldCancelUser() throws SQLException {
-        userDAO.create(new UserImpl("ROMERO", "ROMERO ZATTA", "ACTIVE", "Y"));
-        Assert.assertEquals("ROMERO", userDAO.lastUser().getLogin());
+        userProcess.create(new UserImpl("ROMERO", "ROMERO ZATTA", "ACTIVE", "Y"));
+        Assert.assertEquals("ROMERO", userProcess.lastUser().getLogin());
 
-        userDAO.cancelUser(userDAO.lastId());
-        Assert.assertEquals("INACTIVE", userDAO.lastUser().getStatus());
+        userProcess.cancelUser(userProcess.lastId());
+        Assert.assertEquals("INACTIVE", userProcess.lastUser().getStatus());
     }
 
 
     @Test
     public void shouldRemoveOneUser() throws SQLException {
-        User user = userDAO.lastUser();
+        User user = userProcess.lastUser();
 
-        userDAO.create(new UserImpl("RODOVILSON", "RODOVILSON ZATTA", "ACTIVE", "Y"));
-        Assert.assertEquals("RODOVILSON", userDAO.lastUser().getLogin());
+        userProcess.create(new UserImpl("RODOVILSON", "RODOVILSON ZATTA", "ACTIVE", "Y"));
+        Assert.assertEquals("RODOVILSON", userProcess.lastUser().getLogin());
 
-        userDAO.delete(userDAO.lastId());
-        Assert.assertEquals(user.getLogin(), userDAO.lastUser().getLogin());
+        userProcess.delete(userProcess.lastId());
+        Assert.assertEquals(user.getLogin(), userProcess.lastUser().getLogin());
     }
 
     @After
     public void deleteAllElements() throws SQLException {
-        userDAO.deleteAllElements();
-        Assert.assertTrue(userDAO.listUsers().isEmpty());
+         StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
+         StatementDMLBuilder dml = StatementBuilderFactory.getDMLBuilderInstance();
 
-        dml.close();
-        ddl.close();
+        try{
+            Assert.assertTrue(new UserDAO(ddl, dml).deleteAllElements());
+        }finally {
+            dml.close();
+            ddl.close();
+        }
+
 
     }
 

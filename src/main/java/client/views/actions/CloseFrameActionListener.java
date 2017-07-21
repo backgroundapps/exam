@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created by Samsung on 20/07/2017.
- */
 public class CloseFrameActionListener implements ActionListener{
     JFrame frame;
 

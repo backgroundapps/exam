@@ -59,12 +59,8 @@ public class FunctionalityFrame extends JFrame {
         setTitle("PUC EXAM");
 
 
-        JLabel l = new JLabel();
-        l.setText("APP PUC");
-
-        setContentPane(l);
         setSize(300, 200);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 }

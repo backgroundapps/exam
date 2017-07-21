@@ -1,6 +1,8 @@
 package common;
 
-public class UserImpl implements User {
+import java.io.Serializable;
+
+public class UserImpl implements User , Serializable {
     private Long id;
     private String login;
     private String fullName;

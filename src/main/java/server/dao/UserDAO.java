@@ -125,6 +125,7 @@ public class UserDAO {
         return dml.build().getResultValue() > 0;
     }
 
+    //Just for run all tests
     public boolean deleteAllElements() throws  SQLException{
         dml.addSQL(deleteAll());
         return dml.build().getResultValue() > 0;
