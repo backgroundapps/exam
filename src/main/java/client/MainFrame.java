@@ -1,21 +1,18 @@
 package client;
 
-import client.view.functionality.FunctionalityFrame;
-import client.view.permission.PermissionFrame;
-import client.view.plugin.PluginFrame;
-import client.view.user.UserFrame;
+import client.views.functionality.FunctionalityFrame;
+import client.views.permission.PermissionFrame;
+import client.views.plugin.PluginFrame;
+import client.views.user.UserFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.sql.SQLException;
 
-public class MyFrame extends JFrame {
+public class MainFrame extends JFrame {
 
-    public MyFrame() {
+    public MainFrame() {
         initUI();
     }
 
@@ -77,6 +74,7 @@ public class MyFrame extends JFrame {
 
             }
         });
+
         file.add(userMenuItem);
         file.add(functionalityMenuItem);
         file.add(pluginMenuItem);
@@ -89,11 +87,6 @@ public class MyFrame extends JFrame {
 
         setTitle("PUC EXAM");
 
-
-        JLabel l = new JLabel();
-        l.setText("APP PUC");
-
-        setContentPane(l);
         setSize(300, 200);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
