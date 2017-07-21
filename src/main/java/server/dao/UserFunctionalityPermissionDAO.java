@@ -1,9 +1,11 @@
-package server.dao.utils;
+package server.dao;
 
 import common.Functionality;
 import common.User;
 import common.UserFunctionality;
 import common.UserFunctionalityImpl;
+import server.dao.utils.StatementDDLBuilder;
+import server.dao.utils.StatementDMLBuilder;
 import server.factories.UserFunctionalityFactory;
 
 import java.sql.SQLException;
@@ -15,6 +17,11 @@ import static server.dao.queries.UserFunctionalityPermissionQueries.*;
 public class UserFunctionalityPermissionDAO {
     private StatementDDLBuilder ddl;
     private StatementDMLBuilder dml;
+
+    public UserFunctionalityPermissionDAO(StatementDDLBuilder ddl) {
+        this.ddl = ddl;
+    }
+
 
     public UserFunctionalityPermissionDAO(StatementDDLBuilder ddl, StatementDMLBuilder dml) {
         this.ddl = ddl;
