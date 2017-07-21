@@ -38,33 +38,15 @@ public class PluginImpl implements Plugin {
     @Override
     public Long getId() { return id; }
     @Override
-    public void setId(Long id) { this.id = id; }
-    @Override
     public String getName() {
         return name;
-    }
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
     @Override
     public String getDescription() {
         return description;
     }
     @Override
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    @Override
     public Date getStartDate() {
         return startDate;
     }
-    @Override
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-    @Override
-    public List<Functionality> getFunctionalities() { return functionalities; }
-    @Override
-    public void setFunctionalities(List<Functionality> functionalities) { this.functionalities = functionalities; }
 }
