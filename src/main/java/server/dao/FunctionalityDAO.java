@@ -1,10 +1,8 @@
 package server.dao;
 
 import common.Functionality;
-import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
-import server.dao.utils.Statementable;
 import server.factories.FunctionalityFactory;
 
 import java.sql.Date;
@@ -110,7 +108,7 @@ public class FunctionalityDAO {
         dml.preparingStatement().setLong(1, nextId());
         dml.preparingStatement().setString(2, functionality.getName());
         dml.preparingStatement().setString(3, functionality.getDescription());
-        dml.preparingStatement().setLong(4, functionality.getPlugin().getId());
+        dml.preparingStatement().setLong(4, functionality.getPluginId());
 
         //executeUpdate: return number of rows inserted
         return dml.build().getResultValue() > 0;

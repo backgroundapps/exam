@@ -7,31 +7,31 @@ public class FunctionalityImpl implements Functionality {
     private String name;
     private String description;
     private Date startDate;
-    private Plugin plugin;
+    private Long pluginID;
 
     public FunctionalityImpl(Long id){
         this.id = id;
     }
 
-    public FunctionalityImpl(String name, String description, Plugin plugin ){
+    public FunctionalityImpl(String name, String description, Long pluginID ){
         this.name = name;
         this.description = description;
-        this.plugin = plugin;
+        this.pluginID = pluginID;
     }
 
-    public FunctionalityImpl(String name, String description, Date startDate, Plugin plugin ){
+    public FunctionalityImpl(String name, String description, Date startDate, Long pluginID ){
         this.name = name;
         this.description = description;
         this.startDate = startDate;
-        this.plugin = plugin;
+        this.pluginID = pluginID;
     }
 
-    public FunctionalityImpl(Long id, String name, String description, Date startDate, Plugin plugin){
+    public FunctionalityImpl(Long id, String name, String description, Date startDate, Long pluginID){
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
-        this.plugin = plugin;
+        this.pluginID = pluginID;
 
     }
 
@@ -48,5 +48,5 @@ public class FunctionalityImpl implements Functionality {
     @Override
     public Date getStartDate() { return startDate; }
     @Override
-    public Plugin getPlugin() { return plugin; }
+    public Long getPluginId() { return pluginID; }
 }

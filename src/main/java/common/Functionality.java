@@ -13,6 +13,6 @@ public interface Functionality extends Serializable {
 
     Date getStartDate();
 
-    Plugin getPlugin();
+    Long getPluginId();
 
 }

@@ -24,6 +24,16 @@ public class UserQueries {
         return "SELECT * FROM USERS WHERE ID = ?";
     }
 
+    /**
+     * String query with one parameter
+     * 1 - ID
+     * @return
+     */
+    public static String selectByLogin(){
+        return "SELECT * FROM USERS WHERE LOGIN = ?";
+    }
+
+
     public static String selectAll(){
         return "SELECT * FROM USERS";
     }

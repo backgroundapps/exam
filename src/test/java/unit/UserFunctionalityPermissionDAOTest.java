@@ -8,6 +8,7 @@ import org.junit.Test;
 import server.dao.FunctionalityDAO;
 import server.dao.PluginDAO;
 import server.dao.UserDAO;
+import server.dao.conf.DB;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
@@ -37,7 +38,7 @@ public class UserFunctionalityPermissionDAOTest {
     private void addFuncinalities() throws SQLException {
         String[] functionalitiesName = {"CREATE", "READ", "UPDATE", "REMOVE"};
         for (int i = 0; i < functionalitiesName.length; i++) {
-            functionalityDAO.create(new FunctionalityImpl(functionalitiesName[i], functionalitiesName[i], plugin));
+            functionalityDAO.create(new FunctionalityImpl(functionalitiesName[i], functionalitiesName[i], plugin.getId()));
         }
     }
 
@@ -101,10 +102,7 @@ public class UserFunctionalityPermissionDAOTest {
 
     @After
     public void deleteAllElements() throws SQLException {
-        dao.deleteAllElements();
-        functionalityDAO.deleteAllElements();
-        userDAO.deleteAllElements();
-        new PluginDAO(ddl, dml).deleteAllElements();
+        DB.restart(ddl, dml);
 
     }
 

@@ -24,7 +24,6 @@ public class UserDAO {
         this.ddl = ddl;
     }
 
-
     public UserDAO(StatementDDLBuilder ddl, StatementDMLBuilder dml) {
         this.ddl = ddl;
         this.dml = dml;
@@ -76,6 +75,12 @@ public class UserDAO {
         return user;
     }
 
+    public boolean isValidLogin(String login) throws SQLException {
+        ddl.addSQL(selectByLogin());
+        ddl.preparingStatement().setString(1, login);
+        ddl.build();
+        return ddl.getResult().next();
+    }
 
     public boolean create(User user) throws SQLException {
 
@@ -130,6 +135,5 @@ public class UserDAO {
         dml.addSQL(deleteAll());
         return dml.build().getResultValue() > 0;
     }
-
 
 }

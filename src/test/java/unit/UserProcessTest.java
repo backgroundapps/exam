@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import server.dao.UserDAO;
+import server.dao.conf.DB;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
@@ -113,19 +114,15 @@ public class UserProcessTest {
         Assert.assertEquals(user.getLogin(), userProcess.lastUser().getLogin());
     }
 
+    @Test
+    public void shouldLogin() throws SQLException {
+        Assert.assertTrue(userProcess.login("ADMIN"));
+    }
+
+
     @After
     public void deleteAllElements() throws SQLException {
-         StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
-         StatementDMLBuilder dml = StatementBuilderFactory.getDMLBuilderInstance();
-
-        try{
-            Assert.assertTrue(new UserDAO(ddl, dml).deleteAllElements());
-        }finally {
-            dml.close();
-            ddl.close();
-        }
-
-
+        DB.restart();
     }
 
 

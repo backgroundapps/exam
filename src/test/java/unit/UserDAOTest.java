@@ -5,6 +5,7 @@ import common.User;
 import common.UserImpl;
 import org.junit.*;
 import server.dao.UserDAO;
+import server.dao.conf.DB;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
@@ -116,11 +117,7 @@ public class UserDAOTest {
 
     @After
     public void deleteAllElements() throws SQLException {
-        userDAO.deleteAllElements();
-        Assert.assertTrue(userDAO.listUsers().isEmpty());
-
-        dml.close();
-        ddl.close();
+        DB.restart(ddl, dml);
 
     }
 

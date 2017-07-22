@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import server.dao.PluginDAO;
+import server.dao.conf.DB;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
@@ -105,11 +106,7 @@ public class PluginDAOTest {
 
     @After
     public void removePlugins() throws  SQLException{
-        pluginDAO.deleteAllElements();
-        Assert.assertTrue(pluginDAO.listPlugins().isEmpty());
-
-        dml.close();
-        ddl.close();
+        DB.restart(ddl, dml);
     }
 
 

@@ -131,5 +131,14 @@ public class UserProcess {
     }
 
 
+    public boolean login(String login) throws SQLException {
+        StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
 
+        try {
+            return new UserDAO(ddl).isValidLogin(login);
+
+        }finally {
+            ddl.close();
+        }
+    }
 }

@@ -16,7 +16,7 @@ public class FunctionalityFactory {
                 rst.getString(FunctionalityQueries.FIELDS.NAME.name()),
                 rst.getString(FunctionalityQueries.FIELDS.DESCRIPTION.name()),
                 rst.getDate(FunctionalityQueries.FIELDS.START_DATE.name()),
-                new PluginImpl(rst.getLong(FunctionalityQueries.FIELDS.PLUGIN_ID.name()))
+                rst.getLong(FunctionalityQueries.FIELDS.PLUGIN_ID.name())
 
         );
     }
