@@ -10,20 +10,15 @@ public class FunctionalityImpl implements Functionality {
     private Long pluginID;
 
     public FunctionalityImpl(Long id){
-        this.id = id;
+        this(id, null, null, null, null);
     }
 
     public FunctionalityImpl(String name, String description, Long pluginID ){
-        this.name = name;
-        this.description = description;
-        this.pluginID = pluginID;
+        this(null, name, description, null, pluginID);
     }
 
     public FunctionalityImpl(String name, String description, Date startDate, Long pluginID ){
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.pluginID = pluginID;
+        this(null, name, description, startDate, pluginID);
     }
 
     public FunctionalityImpl(Long id, String name, String description, Date startDate, Long pluginID){

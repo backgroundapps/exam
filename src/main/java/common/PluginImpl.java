@@ -8,24 +8,13 @@ public class PluginImpl implements Plugin {
     private String name;
     private String description;
     private Date startDate;
-    private List<Functionality> functionalities;
-
-    public PluginImpl(){}
-
-    public PluginImpl(Long id){
-        this.id= id;
-    }
 
     public PluginImpl(Long id, String name, String description){
-        this.id = id;
-        this.name = name;
-        this.description = description;
+        this(id, name, description, null);
     }
 
     public PluginImpl(String name, String description, Date startDate){
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
+        this(null, name, description, startDate);
     }
 
     public PluginImpl(Long id, String name, String description, Date startDate){

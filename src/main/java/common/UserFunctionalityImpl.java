@@ -4,9 +4,6 @@ public class UserFunctionalityImpl implements UserFunctionality{
     private User user;
     private Functionality functionality;
 
-    public UserFunctionalityImpl() {
-    }
-
     public UserFunctionalityImpl(User user, Functionality functionality) {
         this.user = user;
         this.functionality = functionality;

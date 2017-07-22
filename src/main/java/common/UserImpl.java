@@ -8,14 +8,11 @@ public class UserImpl implements User {
     private String currentManagement;
 
     public UserImpl(Long id) {
-        this.id = id;
+        this(id, null, null, null, null);
     }
 
     public UserImpl(String login, String fullName, String status, String currentManagement) {
-        this.login = login;
-        this.fullName = fullName;
-        this.status = status;
-        this.currentManagement = currentManagement;
+        this(null, login, fullName, status, currentManagement);
     }
 
     public UserImpl(Long id, String login, String fullName, String status, String currentManagement) {
@@ -24,7 +21,6 @@ public class UserImpl implements User {
         this.fullName = fullName;
         this.status = status;
         this.currentManagement = currentManagement;
-
     }
 
     @Override
