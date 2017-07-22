@@ -35,7 +35,7 @@ public class UserFrame extends JFrame {
         userMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 try {
-                    JOptionPane.showMessageDialog(null, Client.getServer().getUser().size());
+                    JOptionPane.showMessageDialog(null, Client.getServer().getNumberOfUsers());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 } catch (NotBoundException e) {

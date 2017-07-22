@@ -1,15 +1,13 @@
 package client;
 
-import client.views.user.BoxLayoutDemo;
+import client.views.user.LoginFrame;
 import common.ServerInterface;
-import common.User;
 
 import javax.swing.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.List;
 
 public class Client {
 
@@ -25,9 +23,9 @@ public class Client {
 
   public static void main(String[] args) {
     try {
-      MainFrame f = new MainFrame();
+      LoginFrame f=new LoginFrame();
+      f.setSize(400, 150);
       f.setVisible(true);
-
     }
     catch (Exception e) {
       System.err.println("Client exception: " + e.toString());

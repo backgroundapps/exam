@@ -7,11 +7,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import server.dao.UserDAO;
 import server.dao.conf.DB;
-import server.dao.utils.StatementBuilderFactory;
-import server.dao.utils.StatementDDLBuilder;
-import server.dao.utils.StatementDMLBuilder;
 import server.process.UserProcess;
 
 import java.sql.SQLException;
@@ -116,7 +112,7 @@ public class UserProcessTest {
 
     @Test
     public void shouldLogin() throws SQLException {
-        Assert.assertTrue(userProcess.login("ADMIN"));
+        Assert.assertTrue(userProcess.isValidLogin("ADMIN"));
     }
 
 

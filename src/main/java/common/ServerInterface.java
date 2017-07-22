@@ -21,7 +21,9 @@ public interface ServerInterface extends Remote {
    * @return lista com os usuários
    * @throws RemoteException .
    */
-  List<User> getUser() throws RemoteException, SQLException;
+  List<User> getUsers() throws RemoteException, SQLException;
+
+  Boolean isValidLogin(String login) throws RemoteException, SQLException;
 
   Long getNumberOfUsers() throws RemoteException, SQLException;
 
@@ -30,6 +32,5 @@ public interface ServerInterface extends Remote {
   List<Plugin> getPlugins() throws RemoteException, SQLException;
 
   List<UserFunctionality> getPermissions() throws RemoteException, SQLException;
-
 
 }

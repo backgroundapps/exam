@@ -1,65 +1,115 @@
 package client.views.user;
 
 import client.Client;
-import client.views.actions.CloseFrameActionListener;
+import client.MainFrame;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class LoginFrame extends JFrame {
+import javax.swing.*;
+
+public class LoginFrame extends JDialog {
+
+    JLabel loginLabel = new JLabel("Login : ");
+
+    JTextField nameField = new JTextField();
+
+    JButton okButton = new JButton("OK");
+    JButton cancelButton = new JButton("Cancel");
 
     public LoginFrame() {
-        initUI();
+        setupUI();
+
+        setUpListeners();
+
     }
 
-    public final void initUI() {
+    public void setupUI() {
 
-        JMenuBar menubar = new JMenuBar();
+        this.setTitle("Login");
 
-        JMenu file = new JMenu("User Manager");
-        file.setMnemonic(KeyEvent.VK_F);
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-        JMenuItem exiteMenuItem = new JMenuItem("Exit", null);
-        exiteMenuItem.setMnemonic(KeyEvent.VK_E);
-        exiteMenuItem.setToolTipText("Exit application");
-        exiteMenuItem.addActionListener(new CloseFrameActionListener(this));
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
 
-        JMenuItem userMenuItem = new JMenuItem("Number Of Users", null);
-        userMenuItem.setMnemonic(KeyEvent.VK_E);
-        userMenuItem.setToolTipText("User application");
-        userMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    JOptionPane.showMessageDialog(null, Client.getServer().getUser().size());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (NotBoundException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.insets = new Insets(4, 4, 4, 4);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
+        topPanel.add(loginLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        topPanel.add(nameField, gbc);
+
+        this.add(topPanel);
+
+        this.add(buttonPanel, BorderLayout.SOUTH);
+
+    }
+
+    private void setUpListeners() {
+
+        nameField.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    login();
                 }
             }
         });
 
+        okButton.addActionListener(new ActionListener() {
 
-        file.add(userMenuItem);
-        file.add(exiteMenuItem);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                login();
+            }
+        });
 
-        menubar.add(file);
+        cancelButton.addActionListener(new ActionListener() {
 
-        setJMenuBar(menubar);
-
-        setTitle("PUC EXAM");
-
-
-        setSize(300, 200);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginFrame.this.setVisible(false);
+            }
+        });
     }
 
+
+    private void login() {
+        try {
+            if(Client.getServer().isValidLogin(this.nameField.getText())){
+                new MainFrame().setVisible(true);
+                LoginFrame.this.setVisible(false);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid Login!");
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

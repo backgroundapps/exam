@@ -5,7 +5,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import common.*;
@@ -37,7 +36,7 @@ import server.process.UserProcess;
 
   */
   @Override
-  public List<User> getUser() throws RemoteException, SQLException {
+  public List<User> getUsers() throws RemoteException, SQLException {
     try {
       return new UserProcess().getUsers();
     } catch (SQLException e) {
@@ -47,6 +46,17 @@ import server.process.UserProcess;
   }
 
   @Override
+  public Boolean isValidLogin(String login) throws RemoteException, SQLException {
+    try {
+      return new UserProcess().isValidLogin(login);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+
+    @Override
   public Long getNumberOfUsers() throws RemoteException, SQLException {
     return new UserProcess().getNumberOfUsers();
   }
@@ -67,4 +77,5 @@ import server.process.UserProcess;
   }
 
 
-}
+
+  }
