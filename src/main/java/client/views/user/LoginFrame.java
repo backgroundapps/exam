@@ -99,6 +99,7 @@ public class LoginFrame extends JDialog {
         try {
             if(Client.getServer().isValidLogin(this.nameField.getText())){
                 new MainFrame().setVisible(true);
+
                 LoginFrame.this.setVisible(false);
 
             } else {

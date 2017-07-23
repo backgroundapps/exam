@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 
         JMenuBar menubar = new JMenuBar();
 
-        JMenu file = new JMenu("Manager");
+        JMenu file = new JMenu("Menu");
         file.setMnemonic(KeyEvent.VK_F);
 
         JMenuItem exiteMenuItem = new JMenuItem("Exit", null);
@@ -87,8 +87,7 @@ public class MainFrame extends JFrame {
 
         setTitle("PUC EXAM");
 
-        setSize(300, 200);
-        setLocationRelativeTo(null);
+        setSize(400, 220);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }

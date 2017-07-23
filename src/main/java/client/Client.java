@@ -1,5 +1,7 @@
 package client;
 
+import client.views.actions.ShowMessageActionListener;
+import client.views.components.SearchableFrame;
 import client.views.user.LoginFrame;
 import common.ServerInterface;
 
@@ -25,7 +27,9 @@ public class Client {
     try {
       LoginFrame f=new LoginFrame();
       f.setSize(400, 150);
-      f.setVisible(true);
+      f.setVisible(false);
+
+      new SearchableFrame("SEARCH USERS", "Users Name", new ShowMessageActionListener("NOT FOUND!")).setVisible(true);
     }
     catch (Exception e) {
       System.err.println("Client exception: " + e.toString());
