@@ -7,6 +7,7 @@ import server.dao.UserDAO;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
+import server.process.utils.Mapper;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -83,6 +84,15 @@ public class FunctionalityProcess {
             ddl.close();
         }
 
+    }
+
+    public String[] getMappedNames() throws SQLException {
+        List<Functionality> functionalities = getFunctionalities();
+        String[] names = new String[functionalities.size()];
+
+        names = Mapper.getFunctionalityNames(functionalities).toArray(names);
+
+        return names;
     }
 
     public boolean create(Functionality functionality) throws SQLException {

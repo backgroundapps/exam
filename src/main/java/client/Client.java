@@ -1,11 +1,8 @@
 package client;
 
-import client.views.actions.ShowMessageActionListener;
-import client.views.components.SearchableFrame;
 import client.views.user.LoginFrame;
 import common.ServerInterface;
 
-import javax.swing.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -27,9 +24,9 @@ public class Client {
     try {
       LoginFrame f=new LoginFrame();
       f.setSize(400, 150);
-      f.setVisible(false);
+      //new SearchableFrame("SEARCH USERS", "Users Name", new ShowMessageActionListener("NOT FOUND!")).setVisible(true);
+      f.setVisible(true);
 
-      new SearchableFrame("SEARCH USERS", "Users Name", new ShowMessageActionListener("NOT FOUND!")).setVisible(true);
     }
     catch (Exception e) {
       System.err.println("Client exception: " + e.toString());

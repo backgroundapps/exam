@@ -2,8 +2,10 @@ package client.views.user;
 
 import client.Client;
 import client.views.actions.CloseFrameActionListener;
+import client.views.actions.OpenSearchUserFrameActionListener;
 import client.views.actions.OpenUserRegisterFrameActionListener;
 import client.views.actions.ShowMessageActionListener;
+import client.views.components.DefaultProperties;
 import client.views.components.JMenuBarFactory;
 import client.views.components.JMenuItemBuilder;
 
@@ -20,17 +22,15 @@ import java.util.List;
 import java.util.Map;
 
 public class UserFrame extends JFrame {
-    private RegisterUserFrame registerUserFrame;
     public UserFrame() {
         initUI();
     }
 
     public final void initUI() {
-        registerUserFrame = new RegisterUserFrame();
         setJMenuBar(prepareMenuBar());
         setTitle("USER MANAGER");
 
-        setSize(400, 220);
+        setSize(DefaultProperties.WIDTH_SIZE_FRAME, DefaultProperties.HEIGHT_SIZE_FRAME);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
@@ -39,17 +39,12 @@ public class UserFrame extends JFrame {
         List<JMenuItem> items = new LinkedList<>();
 
         items.add(JMenuItemBuilder.build("New", new OpenUserRegisterFrameActionListener()));
-        items.add(JMenuItemBuilder.build("Number Of Users", new ShowMessageActionListener("TODO")));
+        items.add(JMenuItemBuilder.build("Search", new OpenSearchUserFrameActionListener()));
         items.add(JMenuItemBuilder.build("Exit", new CloseFrameActionListener(this)));
 
         mappedMenuBar.put("Menu", items);
 
         return JMenuBarFactory.getJMenuBarFromMappedElements(mappedMenuBar);
-    }
-
-
-    public RegisterUserFrame getRegisterUserFrame(){
-        return this.registerUserFrame;
     }
 
 }

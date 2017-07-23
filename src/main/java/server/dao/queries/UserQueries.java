@@ -2,6 +2,11 @@ package server.dao.queries;
 
 public class UserQueries {
     public enum FIELDS { ID, LOGIN, FULL_NAME, STATUS, CURRENT_MANAGEMENT }
+    public enum FIELDS_DATA {
+        USER_ID, LOGIN, FULL_NAME, STATUS, CURRENT_MANAGEMENT,
+        FUNCTIONALITY_ID, FUNCITONALITY_NAME, FUNCTIONALITY_DESCRIPTION,
+        PLUGIN_ID, PLUGIN_NAME, PLUGIN_DESCRIPTION
+    }
     /**
      * String query with one parameter
      * 1 - ID
@@ -82,5 +87,21 @@ public class UserQueries {
 
     public static String deleteAll(){
         return "DELETE FROM USERS";
+    }
+
+    public static String selectDataFromUserFunctionalityAndPlugin(){
+        return "SELECT \n" +
+                "    US.ID USER_ID, US.LOGIN LOGIN, US.FULL_NAME FULL_NAME, US.STATUS STATUS, US.CURRENT_MANAGEMENT CURRENT_MANAGEMENT,\n" +
+                "    FU.ID FUNCTIONALITY_ID, FU.NAME FUNCITONALITY_NAME, FU.DESCRIPTION FUNCTIONALITY_DESCRIPTION, \n" +
+                "    PL.ID PLUGIN_ID, FU.NAME PLUGIN_NAME, FU.DESCRIPTION PLUGIN_DESCRIPTION \n" +
+                "\n" +
+                "FROM \n" +
+                "    USERS US, FUNCTIONALITIES FU, PLUGINS PL, USERS_FUNC_PERMISSIONS UF\n" +
+                "\n" +
+                "WHERE \n" +
+                "        US.ID = UF.USER_ID\n" +
+                "    AND UF.FUNCTIONALITY_ID = FU.ID\n" +
+                "    AND FU.PLUGIN_ID = PL.ID\n" +
+                "    AND 1 = 1\n";
     }
 }

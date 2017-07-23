@@ -72,6 +72,17 @@ import server.process.UserProcess;
   }
 
   @Override
+  public String[] getPluginMappedNames() throws RemoteException, SQLException {
+    return new PluginProcess().getMappedNames();
+  }
+
+    @Override
+    public String[] getFunctionalityMappedNames() throws RemoteException, SQLException {
+      return new FunctionalityProcess().getMappedNames();
+    }
+
+
+    @Override
   public List<UserFunctionality> getPermissions() throws RemoteException, SQLException {
     return new PermissionProcess().getPermissions();
   }

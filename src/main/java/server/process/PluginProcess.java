@@ -1,17 +1,14 @@
 package server.process;
 
 import common.Plugin;
-import common.User;
 import server.dao.PluginDAO;
-import server.dao.UserDAO;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
+import server.process.utils.Mapper;
 
 import java.sql.SQLException;
 import java.util.List;
-
-import static server.dao.queries.PluginQueries.updateById;
 
 public class PluginProcess {
     public List<Plugin> getPlugins() throws SQLException {
@@ -85,6 +82,15 @@ public class PluginProcess {
         }finally {
             ddl.close();
         }
+    }
+
+    public String[] getMappedNames() throws SQLException {
+        List<Plugin> plugins = getPlugins();
+        String[] names = new String[plugins.size()];
+
+        names = Mapper.getPluginNames(plugins).toArray(names);
+
+        return names;
     }
 
     public boolean create(Plugin plugin) throws SQLException {

@@ -1,9 +1,10 @@
 package common;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public interface Plugin {
+public interface Plugin extends Serializable{
 
 
     Long getId();

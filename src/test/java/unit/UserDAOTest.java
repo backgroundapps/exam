@@ -1,16 +1,22 @@
 package unit;
 
 
+import common.FunctionalityImpl;
+import common.PluginImpl;
 import common.User;
 import common.UserImpl;
 import org.junit.*;
+import server.dao.FunctionalityDAO;
+import server.dao.PluginDAO;
 import server.dao.UserDAO;
+import server.dao.UserFunctionalityPermissionDAO;
 import server.dao.conf.DB;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class UserDAOTest {
@@ -113,6 +119,20 @@ public class UserDAOTest {
 
         userDAO.delete(userDAO.lastId());
         Assert.assertEquals(user.getLogin(), userDAO.lastUser().getLogin());
+    }
+
+    @Test
+    public void shouldFilterUser() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData(null, null, null, null, null, null);
+        Assert.assertNotNull(data);
+        //Assert.assertEquals(1L, data[0][0]);
+        //Assert.assertEquals("ADMIN", data[0][1]);
+
     }
 
     @After

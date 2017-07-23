@@ -84,9 +84,7 @@ public class MainFrame extends JFrame {
         menubar.add(file);
 
         setJMenuBar(menubar);
-
         setTitle("PUC EXAM");
-
         setSize(400, 220);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }

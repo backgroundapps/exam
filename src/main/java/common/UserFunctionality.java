@@ -1,6 +1,8 @@
 package common;
 
-public interface UserFunctionality {
+import java.io.Serializable;
+
+public interface UserFunctionality extends Serializable {
     User getUser();
 
     void setUser(User user);

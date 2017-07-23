@@ -29,7 +29,7 @@ public class PluginDAOTest {
         dml = StatementBuilderFactory.getDMLBuilderInstance();
 
         pluginDAO = new PluginDAO(ddl, dml);
-        pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
+        pluginDAO.create(new PluginImpl("FRAME 1", "FRAME BUILDER", new Date()));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class PluginDAOTest {
 
     @Test
     public void shouldReturnLastPluginID() throws SQLException {
-        pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
+        pluginDAO.create(new PluginImpl("FRAME 2", "FRAME BUILDER", new Date()));
         pluginDAO.create(new PluginImpl("STATUS BAR", "STATUS BAR BUILDER", new Date()));
 
         Plugin plugin = pluginDAO.lastPlugin();
@@ -55,16 +55,16 @@ public class PluginDAOTest {
     @Test
     public void shouldReturnLastPlugin() throws SQLException {
         pluginDAO.create(new PluginImpl("BUTTON", "BUTTON BUILDER", new Date()));
-        pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
+        pluginDAO.create(new PluginImpl("FRAME 3", "FRAME BUILDER", new Date()));
 
-        Assert.assertEquals("FRAME", pluginDAO.lastPlugin().getName());
+        Assert.assertEquals("FRAME 3", pluginDAO.lastPlugin().getName());
     }
 
     @Test
     public void shouldReturnPluginById_1() throws SQLException {
-        pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
+        pluginDAO.create(new PluginImpl("FRAME 4", "FRAME BUILDER", new Date()));
         Long id = pluginDAO.lastId();
-        Assert.assertEquals("FRAME", pluginDAO.findById(id).getName());
+        Assert.assertEquals("FRAME 4", pluginDAO.findById(id).getName());
     }
 
     @Test
@@ -74,20 +74,20 @@ public class PluginDAOTest {
 
     @Test
     public void shouldAddOnePlugin() throws SQLException {
-        pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
-        Assert.assertEquals("FRAME", pluginDAO.lastPlugin().getName());
+        pluginDAO.create(new PluginImpl("FRAME 5", "FRAME BUILDER", new Date()));
+        Assert.assertEquals("FRAME 5", pluginDAO.lastPlugin().getName());
     }
 
     @Test
     public void shouldUpdateOnePlugin() throws SQLException {
-        pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
-        Assert.assertEquals("FRAME", pluginDAO.lastPlugins().getName());
+        pluginDAO.create(new PluginImpl("FRAME 6", "FRAME BUILDER", new Date()));
+        Assert.assertEquals("FRAME 6", pluginDAO.lastPlugins().getName());
 
         pluginDAO.update(new PluginImpl(null, "FRAME BUILDER FLEX", new Date()), pluginDAO.lastId());
 
         Plugin plugin = pluginDAO.findById(pluginDAO.lastId());
 
-        Assert.assertEquals("FRAME", plugin.getName());
+        Assert.assertEquals("FRAME 6", plugin.getName());
         Assert.assertEquals("FRAME BUILDER FLEX", plugin.getDescription());
     }
 
@@ -97,8 +97,8 @@ public class PluginDAOTest {
     public void shouldRemoveOnePlugin() throws SQLException {
         Plugin plugin = pluginDAO.lastPlugin();
 
-        pluginDAO.create(new PluginImpl("FRAME", "FRAME BUILDER", new Date()));
-        Assert.assertEquals("FRAME", pluginDAO.lastPlugin().getName());
+        pluginDAO.create(new PluginImpl("FRAME 7", "FRAME BUILDER", new Date()));
+        Assert.assertEquals("FRAME 7", pluginDAO.lastPlugin().getName());
 
         pluginDAO.delete(pluginDAO.lastId());
         Assert.assertEquals(plugin.getName(), pluginDAO.lastPlugin().getName());

@@ -31,6 +31,10 @@ public interface ServerInterface extends Remote {
 
   List<Plugin> getPlugins() throws RemoteException, SQLException;
 
+  String[] getPluginMappedNames() throws RemoteException, SQLException;
+
+  String[] getFunctionalityMappedNames() throws RemoteException, SQLException;
+
   List<UserFunctionality> getPermissions() throws RemoteException, SQLException;
 
 }

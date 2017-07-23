@@ -1,10 +1,9 @@
 package server.dao;
 
+import common.Functionality;
 import common.User;
-import server.dao.utils.StatementBuilderFactory;
-import server.dao.utils.StatementDDLBuilder;
-import server.dao.utils.StatementDMLBuilder;
-import server.dao.utils.Statementable;
+import server.dao.queries.UserQueries;
+import server.dao.utils.*;
 import server.factories.UserFactory;
 
 import java.sql.SQLException;
@@ -17,9 +16,6 @@ public class UserDAO {
     private StatementDDLBuilder ddl;
     private StatementDMLBuilder dml;
 
-    public UserDAO() {
-    }
-
     public UserDAO(StatementDDLBuilder ddl) {
         this.ddl = ddl;
     }
@@ -27,6 +23,53 @@ public class UserDAO {
     public UserDAO(StatementDDLBuilder ddl, StatementDMLBuilder dml) {
         this.ddl = ddl;
         this.dml = dml;
+    }
+
+    public Object[][] getFullUserData(String userLogin, String userFullName, String userStatus, String userCurrentManager, String pluginName, String functionalityName) throws SQLException {
+        int count = 0;
+        StringBuilder sql = new StringBuilder(selectDataFromUserFunctionalityAndPlugin());
+
+        sql.append(userLogin          != null ? " AND US.LOGIN           = ?" : "");
+        sql.append(userFullName       != null ? " AND US.FULL_NAME        = ?" : "");
+        sql.append(userStatus         != null ? " AND US.STATUS          = ?" : "");
+        sql.append(userCurrentManager != null ? " AND US.CURRENT_MANAGER = ?" : "");
+        sql.append(pluginName         != null ? " AND FU.NAME            = ?" : "");
+        sql.append(functionalityName  != null ? " AND PL.NAME            = ?" : "");
+
+
+        this.ddl.addSQL(selectDataFromUserFunctionalityAndPlugin());
+
+        if(userLogin != null){
+            this.ddl.preparingStatement().setString(++count, userLogin );
+        }
+
+        if(userFullName != null){
+            this.ddl.preparingStatement().setString(++count, userFullName );
+        }
+
+        if(userStatus != null){
+            this.ddl.preparingStatement().setString(++count, userStatus );
+        }
+
+        if(userCurrentManager != null){
+            this.ddl.preparingStatement().setString(++count, userCurrentManager );
+        }
+
+        if(pluginName != null){
+            this.ddl.preparingStatement().setString(++count, pluginName );
+        }
+
+        if(functionalityName != null){
+            this.ddl.preparingStatement().setString(++count, functionalityName );
+        }
+
+        this.ddl.build();
+
+        if(ddl.getResult().next()){
+            return new Object[1][1];
+        }
+
+        return null;
     }
 
     public List<User> listUsers() throws SQLException {

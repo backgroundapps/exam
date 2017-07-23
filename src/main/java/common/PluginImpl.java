@@ -9,6 +9,10 @@ public class PluginImpl implements Plugin {
     private String description;
     private Date startDate;
 
+    public PluginImpl(String name, String description){
+        this(null, name, description, null);
+    }
+
     public PluginImpl(Long id, String name, String description){
         this(id, name, description, null);
     }
