@@ -4,6 +4,7 @@ import common.Functionality;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
 import server.factories.FunctionalityFactory;
+import server.process.utils.Strings;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -121,7 +122,7 @@ public class FunctionalityDAO {
         dml.addSQL(updateById());
         dml.preparingStatement().setString(1, updatedFunctionality.getName() != null ? updatedFunctionality.getName() : oldFunctionality.getName());
         dml.preparingStatement().setString(2, updatedFunctionality.getDescription() != null ? updatedFunctionality.getDescription() : oldFunctionality.getDescription());
-        dml.preparingStatement().setDate(3, updatedFunctionality.getStartDate() != null ? new Date(updatedFunctionality.getStartDate().getTime()) : new Date( oldFunctionality.getStartDate().getTime()));
+        dml.preparingStatement().setLong(3, updatedFunctionality.getPluginId() != null ? updatedFunctionality.getPluginId() : oldFunctionality.getPluginId());
         dml.preparingStatement().setLong(4, id);
 
         //executeUpdate: return number of rows inserted
@@ -139,4 +140,44 @@ public class FunctionalityDAO {
         return dml.build().getResultValue() > 0;
     }
 
+    public Object[][] getFullFunctionalityData(String pluginName) throws SQLException {
+        int count = 0;
+        StringBuilder countSQL = new StringBuilder(countFullByName());
+
+        buildComplexWhere(pluginName, count, countSQL);
+        this.ddl.build();
+
+        int lines = ddl.getResult().next() ? ddl.getResult().getInt(1) : 0;
+
+
+        if(lines > 0){
+            count = 0;
+            StringBuilder sql = new StringBuilder(selectFullByName());
+            buildComplexWhere(pluginName, count, sql);
+            this.ddl.build();
+
+            count = 0;
+            Object[][] items = new Object[lines][4];
+            while(ddl.getResult().next()){
+                items[count] = FunctionalityFactory.getFullDataFilteredByResultSet(ddl.getResult());
+                count++;
+            }
+
+            return items;
+
+        } else {
+            return null;
+        }
+    }
+
+    private void buildComplexWhere(String pluginName, int count, StringBuilder sql) throws SQLException {
+        sql.append(Strings.notEmpty(pluginName)           ? " AND NAME              = ?" : "");
+
+        this.ddl.addSQL(sql.toString());
+
+        if(Strings.notEmpty(pluginName)){
+            this.ddl.preparingStatement().setString(++count, pluginName );
+        }
+
+    }
 }

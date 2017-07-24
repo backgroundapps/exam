@@ -29,6 +29,25 @@ public class FunctionalityQueries {
      * 1 - NAME
      * @return
      */
+    public static String countFullByName(){
+        return "SELECT COUNT(*) FROM FUNCTIONALITIES WHERE 1 = 1 ";
+    }
+
+    /**
+     * String query with one parameter
+     * 1 - NAME
+     * @return
+     */
+    public static String selectFullByName(){
+        return "SELECT * FROM FUNCTIONALITIES WHERE 1 = 1 ";
+    }
+
+
+    /**
+     * String query with one parameter
+     * 1 - NAME
+     * @return
+     */
     public static String selectByName(){
         return "SELECT * FROM FUNCTIONALITIES WHERE NAME = ?";
     }
@@ -58,13 +77,13 @@ public class FunctionalityQueries {
      * String query with 4 parameters
      * 1 - NAME
      * 2 - DESCRIPTION
-     * 3 - START_DATE
+     * 3 - PLUGIN_ID
      *
      * 4 - ID: Functionality in the where
      * @return
      */
     public static String updateById(){
-        return "UPDATE FUNCTIONALITIES SET NAME=?, DESCRIPTION=?, START_DATE=? WHERE ID=?";
+        return "UPDATE FUNCTIONALITIES SET NAME=?, DESCRIPTION=?, PLUGIN_ID=? WHERE ID=?";
     }
 
     public static String deleteAll(){

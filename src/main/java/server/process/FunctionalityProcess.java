@@ -1,9 +1,7 @@
 package server.process;
 
 import common.Functionality;
-import common.User;
 import server.dao.FunctionalityDAO;
-import server.dao.UserDAO;
 import server.dao.utils.StatementBuilderFactory;
 import server.dao.utils.StatementDDLBuilder;
 import server.dao.utils.StatementDMLBuilder;
@@ -128,6 +126,16 @@ public class FunctionalityProcess {
         }finally {
             ddl.close();
             dml.close();
+        }
+    }
+
+    public Object[][] getFullFunctionalityData(String functionalityName) throws SQLException {
+        StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        try {
+            return new FunctionalityDAO(ddl).getFullFunctionalityData(functionalityName);
+
+        }finally {
+            ddl.close();
         }
     }
 }

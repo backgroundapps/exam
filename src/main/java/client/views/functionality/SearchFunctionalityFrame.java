@@ -1,7 +1,7 @@
-package client.views.plugin;
+package client.views.functionality;
 
 import client.views.components.DefaultProperties;
-import server.process.PluginProcess;
+import server.process.FunctionalityProcess;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 
-public class SearchPluginFrame extends JDialog {
+public class SearchFunctionalityFrame extends JDialog {
 
     JLabel nameLabel = new JLabel("Name : ");
 
@@ -22,7 +22,7 @@ public class SearchPluginFrame extends JDialog {
     JButton cancelButton = new JButton("Cancel");
 
 
-    public SearchPluginFrame() {
+    public SearchFunctionalityFrame() {
         setupUI();
         setUpListeners();
         setSize(DefaultProperties.WIDTH_SIZE_FRAME, DefaultProperties.HEIGHT_SIZE_FRAME);
@@ -30,7 +30,7 @@ public class SearchPluginFrame extends JDialog {
     }
 
     public void setupUI() {
-        this.setTitle("SEARCH PLUGIN");
+        this.setTitle("SEARCH FUNCTIONALITY");
 
         JPanel topPanel = new JPanel(new GridBagLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -86,7 +86,7 @@ public class SearchPluginFrame extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                SearchPluginFrame.this.setVisible(false);
+                SearchFunctionalityFrame.this.setVisible(false);
             }
         });
     }
@@ -95,12 +95,12 @@ public class SearchPluginFrame extends JDialog {
     private void search()  {
         try {
 
-            Object[][] data = new PluginProcess().getFullPluginData(
+            Object[][] data = new FunctionalityProcess().getFullFunctionalityData(
                     this.nameField.getText()
             );
 
             if(data != null && data.length > 0){
-                new ResultPluginFrame(data).setVisible(true);
+                new ResultFunctionalityFrame(data).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "DATA NOT FOUND!");
             }

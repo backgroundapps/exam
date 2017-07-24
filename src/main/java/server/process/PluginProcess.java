@@ -64,6 +64,16 @@ public class PluginProcess {
         }
     }
 
+    public Plugin findByName(String name) throws SQLException {
+        StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        try {
+            return new PluginDAO(ddl).findByName(name);
+
+        }finally {
+            ddl.close();
+        }
+    }
+
     public Long nextId() throws SQLException {
         StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
         try {

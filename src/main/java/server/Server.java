@@ -72,6 +72,11 @@ import server.process.UserProcess;
   }
 
   @Override
+  public Plugin getPluginByName(String name) throws RemoteException, SQLException {
+    return new PluginProcess().findByName(name);
+  }
+
+  @Override
   public String[] getPluginMappedNames() throws RemoteException, SQLException {
     return new PluginProcess().getMappedNames();
   }
