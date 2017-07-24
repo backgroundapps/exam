@@ -1,10 +1,10 @@
 package server.dao;
 
-import common.Functionality;
 import common.User;
-import server.dao.queries.UserQueries;
-import server.dao.utils.*;
+import server.dao.utils.StatementDDLBuilder;
+import server.dao.utils.StatementDMLBuilder;
 import server.factories.UserFactory;
+import server.process.utils.Strings;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,49 +27,69 @@ public class UserDAO {
 
     public Object[][] getFullUserData(String userLogin, String userFullName, String userStatus, String userCurrentManager, String pluginName, String functionalityName) throws SQLException {
         int count = 0;
-        StringBuilder sql = new StringBuilder(selectDataFromUserFunctionalityAndPlugin());
+        StringBuilder countSQL = new StringBuilder(countDataFromUserFunctionalityAndPlugin());
+        buildComplexWhere(userLogin, userFullName, userStatus, userCurrentManager, pluginName, functionalityName, count, countSQL);
+        this.ddl.build();
 
-        sql.append(userLogin          != null ? " AND US.LOGIN           = ?" : "");
-        sql.append(userFullName       != null ? " AND US.FULL_NAME        = ?" : "");
-        sql.append(userStatus         != null ? " AND US.STATUS          = ?" : "");
-        sql.append(userCurrentManager != null ? " AND US.CURRENT_MANAGER = ?" : "");
-        sql.append(pluginName         != null ? " AND FU.NAME            = ?" : "");
-        sql.append(functionalityName  != null ? " AND PL.NAME            = ?" : "");
+        int lines = ddl.getResult().next() ? ddl.getResult().getInt(1) : 0;
 
 
-        this.ddl.addSQL(selectDataFromUserFunctionalityAndPlugin());
+        if(lines > 0){
+            count = 0;
+            StringBuilder sql = new StringBuilder(selectDataFromUserFunctionalityAndPlugin());
+            buildComplexWhere(userLogin, userFullName, userStatus, userCurrentManager, pluginName, functionalityName, count, sql);
+            this.ddl.build();
 
-        if(userLogin != null){
+
+
+            count = 0;
+            Object[][] items = new Object[lines][7];
+            if(ddl.getResult().next()){
+                items[count] = UserFactory.getFullDataFilteredByResultSet(ddl.getResult());
+                count++;
+            }
+
+            return items;
+
+        } else {
+            return null;
+        }
+    }
+
+    private void buildComplexWhere(String userLogin, String userFullName, String userStatus, String userCurrentManager, String pluginName, String functionalityName, int count, StringBuilder sql) throws SQLException {
+        sql.append(Strings.notEmpty(userLogin)           ? " AND US.LOGIN              = ?" : "");
+        sql.append(Strings.notEmpty(userFullName)        ? " AND US.FULL_NAME          = ?" : "");
+        sql.append(Strings.notEmpty(userStatus)          ? " AND US.STATUS             = ?" : "");
+        sql.append(Strings.notEmpty(userCurrentManager)  ? " AND US.CURRENT_MANAGEMENT = ?" : "");
+        sql.append(Strings.notEmpty(pluginName)          ? " AND PL.NAME               = ?" : "");
+        sql.append(Strings.notEmpty(functionalityName)   ? " AND FU.NAME               = ?" : "");
+
+
+        this.ddl.addSQL(sql.toString());
+
+        if(Strings.notEmpty(userLogin)){
             this.ddl.preparingStatement().setString(++count, userLogin );
         }
 
-        if(userFullName != null){
+        if( Strings.notEmpty(userFullName)){
             this.ddl.preparingStatement().setString(++count, userFullName );
         }
 
-        if(userStatus != null){
+        if( Strings.notEmpty(userStatus)){
             this.ddl.preparingStatement().setString(++count, userStatus );
         }
 
-        if(userCurrentManager != null){
+        if( Strings.notEmpty(userCurrentManager)){
             this.ddl.preparingStatement().setString(++count, userCurrentManager );
         }
 
-        if(pluginName != null){
+        if( Strings.notEmpty(pluginName)){
             this.ddl.preparingStatement().setString(++count, pluginName );
         }
 
-        if(functionalityName != null){
+        if( Strings.notEmpty(functionalityName)){
             this.ddl.preparingStatement().setString(++count, functionalityName );
         }
-
-        this.ddl.build();
-
-        if(ddl.getResult().next()){
-            return new Object[1][1];
-        }
-
-        return null;
     }
 
     public List<User> listUsers() throws SQLException {

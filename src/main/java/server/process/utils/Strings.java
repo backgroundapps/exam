@@ -1,0 +1,7 @@
+package server.process.utils;
+
+public class Strings {
+    public static boolean notEmpty(String value){
+        return value != null && !value.isEmpty();
+    }
+}

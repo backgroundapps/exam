@@ -130,7 +130,6 @@ public class UserProcess {
         }
     }
 
-
     public boolean isValidLogin(String login) throws SQLException {
         StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
 
@@ -141,4 +140,29 @@ public class UserProcess {
             ddl.close();
         }
     }
+
+    /**
+     * TODO : Refactor
+     *
+     *
+     * @param userLogin
+     * @param userFullName
+     * @param userStatus
+     * @param userCurrentManager
+     * @param pluginName
+     * @param functionalityName
+     * @return
+     * @throws SQLException
+     */
+    public Object[][] getFullUserData(String userLogin, String userFullName, String userStatus, String userCurrentManager, String pluginName, String functionalityName) throws SQLException {
+        StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        try {
+            return new UserDAO(ddl).getFullUserData(userLogin, userFullName, userStatus, userCurrentManager, pluginName, functionalityName);
+
+        }finally {
+            ddl.close();
+        }
+
+    }
+
 }

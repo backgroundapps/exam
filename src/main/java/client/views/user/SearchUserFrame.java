@@ -2,6 +2,7 @@ package client.views.user;
 
 import client.Client;
 import client.views.components.DefaultProperties;
+import server.process.UserProcess;
 
 import javax.swing.*;
 import java.awt.*;
@@ -199,25 +200,35 @@ public class SearchUserFrame extends JDialog {
     }
 
 
-    private void search() {
-        StringBuilder result = new StringBuilder();
-        result.append("Login: " + this.loginField.getText());
-        result.append("\nFull Name: " + this.fullNameField.getText());
-        result.append("\nStatus: " + (this.statusActiveRadioButton.isSelected() ? "ACTIVE" : "INACTIVE"));
-        result.append("\nCurrent Manager: " + (this.currentManagerCheckBox.isSelected() ? "YES" : "NO"));
-        result.append("\nPlugin: " + this.pluginsComboBox.getSelectedItem());
-        result.append("\nFunctionality: " + this.functionalitiesComboBox.getSelectedItem());
+    private void search()  {
+        try {
 
-        JOptionPane.showMessageDialog(null, result.toString());
+            Object[][] data = new UserProcess().getFullUserData(
+                    this.loginField.getText(),
+                    this.fullNameField.getText(),
+                    (this.statusActiveRadioButton.isSelected() ? "ACTIVE" : "INACTIVE"),
+                    (this.currentManagerCheckBox.isSelected() ? "Y" : "N"),
+                    this.pluginsComboBox.getSelectedItem().toString(),
+                    this.functionalitiesComboBox.getSelectedItem().toString()
+
+            );
+
+            if(data != null && data.length > 0){
+                new ResultUserFrame(data).setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "DATA NOT FOUND!");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
     private String[] getPluginNames(){
         try {
 
-            Client.getServer().getPluginMappedNames();
-
-            return new String[] {"TELA", "OUTRA"};
+            return Client.getServer().getPluginMappedNames();
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -233,9 +244,7 @@ public class SearchUserFrame extends JDialog {
     public String[] getFunctionalityNames() {
         try {
 
-            Client.getServer().getFunctionalityMappedNames();
-
-            return new String[] {"TELA", "OUTRA"};
+            return Client.getServer().getFunctionalityMappedNames();
 
         } catch (RemoteException e) {
             e.printStackTrace();

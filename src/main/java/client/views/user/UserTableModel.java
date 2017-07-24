@@ -1,17 +1,17 @@
 package client.views.user;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 public class UserTableModel extends AbstractTableModel {
+    private Object[][] data;
 
-    String[] columnNames = {"Login", "Full Name", "Status"
-            , "Current Manager", "Plugins", "Functionalities", "Detail" };
+    public UserTableModel(Object[][] data) {
+        this.data = data;
+    }
 
-    Object[][] data = {
-            {"César Cielo", "Filho", "Brazil", "50m freestyle",1 , "21.30","Details"},
-            {"Amaury", "Leveaux", "France", "50m freestyle", 2, "21.45", false },
-            {"Hugues", "Duboscq", "France", "100m breaststroke", 3, "59.37", false }
-    };
+    String[] columnNames = {"User ID", "Login", "Full Name", "Status" , "Current Manager", "Functionalities", "Plugins"};
+
 
     @Override
     public int getRowCount()

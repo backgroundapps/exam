@@ -122,7 +122,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void shouldFilterUser() throws SQLException {
+    public void shouldFilter() throws SQLException {
         new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
         new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
         new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
@@ -130,10 +130,135 @@ public class UserDAOTest {
 
         Object[][] data = userDAO.getFullUserData(null, null, null, null, null, null);
         Assert.assertNotNull(data);
-        //Assert.assertEquals(1L, data[0][0]);
-        //Assert.assertEquals("ADMIN", data[0][1]);
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
 
     }
+
+    @Test
+    public void shouldFilterADMIN() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData("ADMIN", null, null, null, null, null);
+        Assert.assertNotNull(data);
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
+
+    }
+
+    @Test
+    public void shouldFilterFullName() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData(null, "JOSE ADMIN", null, null, null, null);
+        Assert.assertNotNull(data);
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
+
+    }
+
+    @Test
+    public void shouldFilterStatus() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData(null, null,  "ACTIVE", null, null, null);
+        Assert.assertNotNull(data);
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
+
+    }
+
+
+    @Test
+    public void shouldFilterCurrentManagement() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData(null, null, null, "Y", null, null);
+        Assert.assertNotNull(data);
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
+
+    }
+
+    @Test
+    public void shouldFilterPlugin() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData(null, null, null, null, "PLUGIN", null);
+        Assert.assertNotNull(data);
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
+
+    }
+
+    @Test
+    public void shouldFilterFunctionality() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData(null, null , null, null, null, "FUNCTIONALITY");
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
+
+    }
+
+
+    @Test
+    public void shouldFilterFull() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData("ADMIN", "JOSE ADMIN", "ACTIVE", "Y", "PLUGIN", "FUNCTIONALITY");
+        Assert.assertNotNull(data);
+
+    }
+
+
+    @Test
+    public void shouldFilterAdminManager() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+
+        Object[][] data = userDAO.getFullUserData("ADMIN", null, null, "Y", null, null);
+        Assert.assertNotNull(data);
+        Assert.assertEquals(1L, data[0][0]);
+        Assert.assertEquals("ADMIN", data[0][1]);
+
+    }
+
+
+    @Test
+    public void shouldFilterNoInfo() throws SQLException {
+        new PluginDAO(ddl, dml).create(new PluginImpl("PLUGIN", "PLUGIN"));
+        new FunctionalityDAO(ddl, dml).create(new FunctionalityImpl("FUNCTIONALITY", "FUNCTIONALITY", 1L));
+        new UserFunctionalityPermissionDAO(ddl, dml).addPermission(new UserImpl(1L), new FunctionalityImpl(1L));
+
+        Object[][] data = userDAO.getFullUserData("LOGIN NOT FOUND", null, null, null, null, null);
+        Assert.assertNull(data);
+
+    }
+
 
     @After
     public void deleteAllElements() throws SQLException {
