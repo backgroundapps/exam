@@ -132,4 +132,13 @@ public class PluginProcess {
         }
     }
 
+    public Object[][] getFullPluginData(String pluginName) throws SQLException {
+        StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        try {
+            return new PluginDAO(ddl).getFullPluginData(pluginName);
+
+        }finally {
+            ddl.close();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package client.views.user;
 
+import client.views.components.DefaultProperties;
 import common.UserImpl;
 import server.process.UserProcess;
 
@@ -32,7 +33,7 @@ public class RegisterUserFrame extends JDialog {
     public RegisterUserFrame() {
         setupUI();
         setUpListeners();
-        setSize(400, 220);
+        setSize(DefaultProperties.WIDTH_SIZE_FRAME, DefaultProperties.HEIGHT_SIZE_FRAME);
 
     }
 

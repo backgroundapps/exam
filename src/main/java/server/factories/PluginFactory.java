@@ -6,6 +6,7 @@ import server.dao.queries.PluginQueries;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 public class PluginFactory {
 
@@ -16,5 +17,14 @@ public class PluginFactory {
                 rst.getString(PluginQueries.FIELDS.DESCRIPTION.name()),
                 rst.getDate(PluginQueries.FIELDS.START_DATE.name())
         );
+    }
+
+    public static Object[] getFullDataFilteredByResultSet(ResultSet rst) throws SQLException {
+        return new Object[] {
+                rst.getLong(PluginQueries.FIELDS.ID.name()),
+                rst.getString(PluginQueries.FIELDS.NAME.name()),
+                rst.getString(PluginQueries.FIELDS.DESCRIPTION.name()),
+                new SimpleDateFormat("dd/MM/yyyy").format(rst.getDate(PluginQueries.FIELDS.START_DATE.name())),
+        };
     }
 }

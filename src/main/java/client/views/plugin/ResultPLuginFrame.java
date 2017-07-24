@@ -1,19 +1,20 @@
-package client.views.user;
+package client.views.plugin;
 
 import client.views.components.DefaultProperties;
+import client.views.user.JScrollUserPanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ResultUserFrame extends JDialog {
+public class ResultPluginFrame extends JDialog {
 
     JButton cancelButton = new JButton("Cancel");
     private Object[][] data;
 
 
-    public ResultUserFrame(Object[][] data) {
+    public ResultPluginFrame(Object[][] data) {
         this.data = data;
         setupUI();
         setUpListeners();
@@ -23,13 +24,13 @@ public class ResultUserFrame extends JDialog {
 
     public void setupUI() {
 
-        this.setTitle("RESULT USER");
+        this.setTitle("RESULT PLUGIN");
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         buttonPanel.add(new JLabel("To sort the result click on the column title."));
         buttonPanel.add(cancelButton);
-        this.add(new JScrollUserPanelBuilder(new UserTableModel(data)).getTable());
+        this.add(new JScrollPluginPanelBuilder(new PluginTableModel(data)).getTable());
         this.add(buttonPanel, BorderLayout.SOUTH);
 
     }
@@ -43,7 +44,7 @@ public class ResultUserFrame extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ResultUserFrame.this.setVisible(false);
+                ResultPluginFrame.this.setVisible(false);
             }
         });
     }

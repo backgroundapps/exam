@@ -1,6 +1,12 @@
 package client.views.plugin;
 
 import client.Client;
+import client.views.actions.CloseFrameActionListener;
+import client.views.actions.OpenSearchUserFrameActionListener;
+import client.views.actions.OpenUserRegisterFrameActionListener;
+import client.views.components.DefaultProperties;
+import client.views.components.JMenuBarFactory;
+import client.views.components.JMenuItemBuilder;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +15,10 @@ import java.awt.event.KeyEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class PluginFrame extends JFrame {
 
@@ -17,50 +27,35 @@ public class PluginFrame extends JFrame {
     }
 
     public final void initUI() {
+        setJMenuBar(prepareMenuBar());
+        setTitle("PLUGIN MANAGER");
 
-        JMenuBar menubar = new JMenuBar();
-
-        JMenu file = new JMenu("Plugin Manager");
-        file.setMnemonic(KeyEvent.VK_F);
-
-        JMenuItem exiteMenuItem = new JMenuItem("Exit", null);
-        exiteMenuItem.setMnemonic(KeyEvent.VK_E);
-        exiteMenuItem.setToolTipText("Exit application");
-        exiteMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                setVisible(false);
-            }
-        });
-
-        JMenuItem userMenuItem = new JMenuItem("Number Of Plugins", null);
-        userMenuItem.setMnemonic(KeyEvent.VK_E);
-        userMenuItem.setToolTipText("Plugin application");
-        userMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    JOptionPane.showMessageDialog(null, Client.getServer().getPlugins().size());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (NotBoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        file.add(userMenuItem);
-        file.add(exiteMenuItem);
-
-        menubar.add(file);
-
-        setJMenuBar(menubar);
-
-        setTitle("PUC EXAM");
-
-
-        setSize(300, 200);
-        setLocationRelativeTo(null);
+        setSize(DefaultProperties.WIDTH_SIZE_FRAME, DefaultProperties.HEIGHT_SIZE_FRAME);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
+    }
+
+    private JMenuBar prepareMenuBar() {
+        Map<String, List<JMenuItem>> mappedMenuBar = new LinkedHashMap<>();
+        List<JMenuItem> items = new LinkedList<>();
+
+        items.add(JMenuItemBuilder.build("New", new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new RegisterPluginFrame().setVisible(true);
+            }
+        }));
+
+        items.add(JMenuItemBuilder.build("Search", new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SearchPluginFrame().setVisible(true);
+            }
+        }));
+
+        items.add(JMenuItemBuilder.build("Exit", new CloseFrameActionListener(this)));
+
+        mappedMenuBar.put("Menu", items);
+
+        return JMenuBarFactory.getJMenuBarFromMappedElements(mappedMenuBar);
     }
 }

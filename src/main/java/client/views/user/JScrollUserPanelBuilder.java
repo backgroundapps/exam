@@ -1,15 +1,15 @@
-package client.views.components;
+package client.views.user;
 
 import client.views.user.EditUserFrame;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
-public class JScrollPaneBuilder<T> {
+public class JScrollUserPanelBuilder<T> {
 
     private AbstractTableModel tableModel;
     private JTable table;
-    public JScrollPaneBuilder(AbstractTableModel tableModel) {
+    public JScrollUserPanelBuilder(AbstractTableModel tableModel) {
         this.tableModel = tableModel;
     }
 

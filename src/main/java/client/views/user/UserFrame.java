@@ -1,21 +1,13 @@
 package client.views.user;
 
-import client.Client;
 import client.views.actions.CloseFrameActionListener;
 import client.views.actions.OpenSearchUserFrameActionListener;
 import client.views.actions.OpenUserRegisterFrameActionListener;
-import client.views.actions.ShowMessageActionListener;
 import client.views.components.DefaultProperties;
 import client.views.components.JMenuBarFactory;
 import client.views.components.JMenuItemBuilder;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;

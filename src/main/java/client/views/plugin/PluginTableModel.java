@@ -1,15 +1,15 @@
-package client.views.user;
+package client.views.plugin;
 
 import javax.swing.table.AbstractTableModel;
 
-public class UserTableModel extends AbstractTableModel {
+public class PluginTableModel extends AbstractTableModel {
     private Object[][] data;
 
-    public UserTableModel(Object[][] data) {
+    public PluginTableModel(Object[][] data) {
         this.data = data;
     }
 
-    String[] columnNames = {"User ID", "Login", "Full Name", "Status" , "Current Manager", "Functionalities", "Plugins"};
+    String[] columnNames = {"Plugin ID", "Name", "Description", "Start Date"};
 
 
     @Override

@@ -1,5 +1,6 @@
 package client;
 
+import client.views.components.DefaultProperties;
 import client.views.functionality.FunctionalityFrame;
 import client.views.permission.PermissionFrame;
 import client.views.plugin.PluginFrame;
@@ -85,7 +86,7 @@ public class MainFrame extends JFrame {
 
         setJMenuBar(menubar);
         setTitle("PUC EXAM");
-        setSize(400, 220);
+        setSize(DefaultProperties.WIDTH_SIZE_FRAME, DefaultProperties.HEIGHT_SIZE_FRAME);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }

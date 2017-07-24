@@ -24,6 +24,43 @@ public class PluginQueries {
         return "SELECT * FROM PLUGINS WHERE ID = ?";
     }
 
+    /**
+     * String query with one parameter
+     * 1 - NAME
+     * @return
+     */
+    public static String selectByName(){
+        return "SELECT * FROM PLUGINS WHERE NAME = ?";
+    }
+
+    /**
+     * String query with one parameter
+     * 1 - NAME
+     * @return
+     */
+    public static String selectFullByName(){
+        return "SELECT * FROM PLUGINS WHERE 1 = 1 ";
+    }
+
+
+    /**
+     * String query with one parameter
+     * 1 - NAME
+     * @return
+     */
+    public static String countByName(){
+        return "SELECT COUNT(*) FROM PLUGINS WHERE NAME = ?";
+    }
+
+    /**
+     * String query with one parameter
+     * 1 - NAME
+     * @return
+     */
+    public static String countFullByName(){
+        return "SELECT COUNT(*) FROM PLUGINS WHERE 1 = 1 ";
+    }
+
     public static String selectAll(){
         return "SELECT * FROM PLUGINS";
     }
