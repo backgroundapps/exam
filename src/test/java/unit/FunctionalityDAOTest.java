@@ -29,8 +29,10 @@ public class FunctionalityDAOTest {
 
 
     private void persistPlugin() throws SQLException {
-        plugin = new PluginImpl(1L, "PLUGIN MOCK", "PLUGIN MOCK");
-        new PluginDAO(ddl, dml).create(plugin);
+        plugin = new PluginImpl("PLUGIN MOCK", "PLUGIN MOCK");
+        PluginDAO pdao = new PluginDAO(ddl, dml);
+        pdao.create(plugin);
+        plugin = pdao.lastPlugin();
     }
 
     @Before
@@ -40,7 +42,8 @@ public class FunctionalityDAOTest {
 
         persistPlugin();
         functionalityDAO = new FunctionalityDAO(ddl, dml);
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP", "CREATE MAP", new Date(), plugin.getId()));
+
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP", "CREATE MAP", new PluginDAO(ddl, dml).lastId()));
     }
 
     @Test
@@ -57,8 +60,8 @@ public class FunctionalityDAOTest {
 
     @Test
     public void shouldReturnLastFunctionalityID() throws SQLException {
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 1", "CREATE MAP", new Date(), 1L));
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 2", "CREATE MAP", new Date(), 1L));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 1", "CREATE MAP", new Date(), plugin.getId()));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 2", "CREATE MAP", new Date(), plugin.getId()));
 
         Functionality functionality = functionalityDAO.lastFunctionality();
         Assert.assertEquals(functionality.getId(), functionalityDAO.lastId());
@@ -67,8 +70,8 @@ public class FunctionalityDAOTest {
 
     @Test
     public void shouldReturnLastFunctionality() throws SQLException {
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 3", "CREATE MAP", new Date(), 1L));
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 4", "CREATE MAP", new Date(), 1L));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 3", "CREATE MAP",plugin.getId()));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 4", "CREATE MAP", plugin.getId()));
 
         Assert.assertEquals("CREATE MAP 4", functionalityDAO.lastFunctionality().getName());
 
@@ -76,7 +79,7 @@ public class FunctionalityDAOTest {
 
     @Test
     public void shouldReturnFunctionalityById() throws SQLException {
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 5", "CREATE MAP", new Date(), 1L));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 5", "CREATE MAP", new Date(), plugin.getId()));
         Long id = functionalityDAO.lastId();
         Assert.assertEquals("CREATE MAP 5", functionalityDAO.findById(id).getName());
 
@@ -84,7 +87,7 @@ public class FunctionalityDAOTest {
 
     @Test
     public void shouldReturnFunctionalityByName() throws SQLException {
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP NAME", "CREATE MAP", new Date(),1L));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP NAME", "CREATE MAP", new Date(),plugin.getId()));
         Assert.assertEquals("CREATE MAP NAME", functionalityDAO.findByName("CREATE MAP NAME").getName());
 
     }
@@ -96,17 +99,17 @@ public class FunctionalityDAOTest {
 
     @Test
     public void shouldAddOneFunctionality() throws SQLException {
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 6", "CREATE MAP", new Date(), 1L));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 6", "CREATE MAP", new Date(), plugin.getId()));
         Assert.assertEquals("CREATE MAP 6", functionalityDAO.lastFunctionality().getName());
 
     }
 
     @Test
     public void shouldUpdateOneFunctionality() throws SQLException {
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 7.7", "CREATE MAP", new Date(), 1L));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 7.7", "CREATE MAP", new Date(), plugin.getId()));
         Assert.assertEquals("CREATE MAP 7.7", functionalityDAO.lastFunctionality().getName());
 
-        Assert.assertTrue(functionalityDAO.update(new FunctionalityImpl(null, "CREATE MAP 7.00", new Date(), 1L), functionalityDAO.lastId()));
+        Assert.assertTrue(functionalityDAO.update(new FunctionalityImpl(null, "CREATE MAP 7.00", new Date(), plugin.getId()), functionalityDAO.lastId()));
 
         Functionality functionality = functionalityDAO.findById(functionalityDAO.lastId());
 
@@ -119,7 +122,7 @@ public class FunctionalityDAOTest {
     public void shouldRemoveOneFunctionality() throws SQLException {
         Functionality functionality = functionalityDAO.lastFunctionality();
 
-        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 8", "CREATE MAP", new Date(), 1L));
+        functionalityDAO.create(new FunctionalityImpl("CREATE MAP 8", "CREATE MAP", new Date(), plugin.getId()));
         Assert.assertEquals("CREATE MAP 8", functionalityDAO.lastFunctionality().getName());
 
         functionalityDAO.delete(functionalityDAO.lastId());

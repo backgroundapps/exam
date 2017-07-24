@@ -114,9 +114,8 @@ public class PluginDAO {
 
     public boolean create(Plugin plugin) throws SQLException {
         dml.addSQL(insert());
-        dml.preparingStatement().setLong(1, nextId());
-        dml.preparingStatement().setString(2, plugin.getName());
-        dml.preparingStatement().setString(3, plugin.getDescription());
+        dml.preparingStatement().setString(1, plugin.getName());
+        dml.preparingStatement().setString(2, plugin.getDescription());
 
         //executeUpdate: return number of rows inserted
         return dml.build().getResultValue() > 0;

@@ -35,6 +35,40 @@ public class FunctionalityQueries {
 
     /**
      * String query with one parameter
+     * 1 - ID
+     * @return
+     */
+    public static String countFullByUserId(){
+        return "SELECT COUNT(*)\n" +
+                "\n" +
+                "FROM \n" +
+                "    USERS US, FUNCTIONALITIES FU, USERS_FUNC_PERMISSIONS UF\n" +
+                "\n" +
+                "WHERE \n" +
+                "        US.ID = UF.USER_ID\n" +
+                "    AND UF.FUNCTIONALITY_ID = FU.ID\n" +
+                "    AND US.ID = ?";
+    }
+
+    /**
+     * String query with one parameter
+     * 1 - ID
+     * @return
+     */
+    public static String selectFullByUserId(){
+        return "SELECT FU.*\n" +
+                "\n" +
+                "FROM \n" +
+                "    USERS US, FUNCTIONALITIES FU, USERS_FUNC_PERMISSIONS UF\n" +
+                "\n" +
+                "WHERE \n" +
+                "        US.ID = UF.USER_ID\n" +
+                "    AND UF.FUNCTIONALITY_ID = FU.ID\n" +
+                "    AND US.ID = ?";
+    }
+
+    /**
+     * String query with one parameter
      * 1 - NAME
      * @return
      */
@@ -70,7 +104,7 @@ public class FunctionalityQueries {
      * @return
      */
     public static String insert(){
-        return "INSERT INTO FUNCTIONALITIES (ID, NAME, DESCRIPTION, PLUGIN_ID) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO FUNCTIONALITIES (NAME, DESCRIPTION, PLUGIN_ID) VALUES (?, ?, ?)";
     }
 
     /**

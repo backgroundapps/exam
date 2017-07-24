@@ -79,7 +79,6 @@ public class MainFrame extends JFrame {
         file.add(userMenuItem);
         file.add(functionalityMenuItem);
         file.add(pluginMenuItem);
-        file.add(permissionMenuItem);
         file.add(exiteMenuItem);
 
         menubar.add(file);

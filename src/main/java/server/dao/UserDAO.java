@@ -153,11 +153,10 @@ public class UserDAO {
     public boolean create(User user) throws SQLException {
 
         dml.addSQL(insert());
-        dml.preparingStatement().setLong(1, nextId());
-        dml.preparingStatement().setString(2, user.getLogin());
-        dml.preparingStatement().setString(3, user.getFullName());
-        dml.preparingStatement().setString(4, user.getStatus());
-        dml.preparingStatement().setString(5, user.getCurrentManagement());
+        dml.preparingStatement().setString(1, user.getLogin());
+        dml.preparingStatement().setString(2, user.getFullName());
+        dml.preparingStatement().setString(3, user.getStatus());
+        dml.preparingStatement().setString(4, user.getCurrentManagement());
 
         //executeUpdate: return number of rows inserted
         return dml.build().getResultValue() > 0;

@@ -58,7 +58,7 @@ public class UserQueries {
      * @return
      */
     public static String insert(){
-        return "INSERT INTO USERS (ID, LOGIN, FULL_NAME, STATUS, CURRENT_MANAGEMENT) VALUES (?, ?, ?, ?, ?)";
+        return "INSERT INTO USERS (LOGIN, FULL_NAME, STATUS, CURRENT_MANAGEMENT) VALUES (?, ?, ?, ?)";
     }
 
     /**

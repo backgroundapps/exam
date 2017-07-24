@@ -1,19 +1,23 @@
 package client.views.user;
 
 import client.views.components.DefaultProperties;
+import client.views.permission.ResultPermissionFrame;
+import server.process.FunctionalityProcess;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class ResultUserFrame extends JDialog {
-
     JButton cancelButton = new JButton("Cancel");
     private Object[][] data;
+    private Long userId;
 
 
-    public ResultUserFrame(Object[][] data) {
+    public ResultUserFrame(Object[][] data, Long userId) {
+        this.userId = userId;
         this.data = data;
         setupUI();
         setUpListeners();
@@ -29,7 +33,7 @@ public class ResultUserFrame extends JDialog {
 
         buttonPanel.add(new JLabel("To sort the result click on the column title."));
         buttonPanel.add(cancelButton);
-        this.add(new JScrollUserPanelBuilder(new UserTableModel(data)).getTable());
+        this.add(new JScrollUserPanelBuilder(new UserTableModel(data), this).getTable());
         this.add(buttonPanel, BorderLayout.SOUTH);
 
     }
@@ -37,8 +41,6 @@ public class ResultUserFrame extends JDialog {
 
 
     private void setUpListeners() {
-
-
         cancelButton.addActionListener(new ActionListener() {
 
             @Override

@@ -88,4 +88,17 @@ public class PermissionProcess {
         }
     }
 
+    public boolean removePermissionById(Long user, Long functionality) throws SQLException {
+        StatementDMLBuilder dml = StatementBuilderFactory.getDMLBuilderInstance();
+        StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        try {
+            return new UserFunctionalityPermissionDAO(ddl, dml).removePermissionById(user, functionality);
+
+        }finally {
+            ddl.close();
+            dml.close();
+        }
+    }
+
+
 }

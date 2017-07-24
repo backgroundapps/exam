@@ -138,4 +138,14 @@ public class FunctionalityProcess {
             ddl.close();
         }
     }
+
+    public Object[][] getFullFunctionalityDataByUserId(Long userId) throws SQLException {
+        StatementDDLBuilder ddl = StatementBuilderFactory.getDDLBuilderInstance();
+        try {
+            return new FunctionalityDAO(ddl).getFullFunctionalityDataByUserId(userId);
+
+        }finally {
+            ddl.close();
+        }
+    }
 }

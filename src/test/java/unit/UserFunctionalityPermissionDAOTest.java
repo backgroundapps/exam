@@ -31,8 +31,10 @@ public class UserFunctionalityPermissionDAOTest {
     private StatementDDLBuilder ddl;
 
     private void persistPlugin() throws SQLException {
-        plugin = new PluginImpl(1L, "PLUGIN", "PLUGINBUILDER");
-        new PluginDAO(ddl, dml).create(plugin );
+        plugin = new PluginImpl("PLUGIN", "PLUGINBUILDER");
+        PluginDAO pdao = new PluginDAO(ddl, dml);
+        pdao.create(plugin );
+        plugin = (PluginImpl) pdao.lastPlugin();
     }
     
     private void addFuncinalities() throws SQLException {
@@ -51,8 +53,9 @@ public class UserFunctionalityPermissionDAOTest {
         functionalityDAO = new FunctionalityDAO(ddl, dml);
         dao = new UserFunctionalityPermissionDAO(ddl, dml);
 
-        user = new UserImpl(1L, "ARIOSVALDO", "ARIOSVALDO LENNON", "ACTIVE", "Y");
+        user = new UserImpl("ARIOSVALDO", "ARIOSVALDO LENNON", "ACTIVE", "Y");
         userDAO.create(user);
+        user = userDAO.lastUser();
 
         persistPlugin();
         addFuncinalities();

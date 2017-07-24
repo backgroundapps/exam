@@ -1,8 +1,12 @@
 package client.views.user;
 
 import client.views.components.DefaultProperties;
+import client.views.functionality.ResultFunctionalityFrame;
+import client.views.permission.AddPermissionFrame;
+import client.views.permission.ResultPermissionFrame;
 import common.User;
 import common.UserImpl;
+import server.process.FunctionalityProcess;
 import server.process.UserProcess;
 
 import javax.swing.*;
@@ -31,6 +35,7 @@ public class EditUserFrame extends JDialog {
 
     JCheckBox currentManagerCheckBox = new JCheckBox();
     JButton deleteButton = new JButton("Remove");
+    JButton permissionButton = new JButton("Update Permissions");
     JButton saveButton = new JButton("Save");
     JButton cancelButton = new JButton("Cancel");
 
@@ -76,8 +81,10 @@ public class EditUserFrame extends JDialog {
         JPanel topPanel = new JPanel(new GridBagLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         deleteButton.setBackground(Color.RED);
+        permissionButton.setBackground(Color.BLUE);
         buttonPanel.add(saveButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(permissionButton);
         buttonPanel.add(cancelButton);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -190,6 +197,14 @@ public class EditUserFrame extends JDialog {
             }
         });
 
+        permissionButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listPermisions();
+            }
+        });
+
         deleteButton.addActionListener(new ActionListener() {
 
             @Override
@@ -253,5 +268,22 @@ public class EditUserFrame extends JDialog {
         return result;
     }
 
+
+    private void listPermisions()  {
+        try {
+
+            Object[][] data = new FunctionalityProcess().getFullFunctionalityDataByUserId(userId);
+
+            if(data != null && data.length > 0){
+                new ResultPermissionFrame(data, userId).setVisible(true);
+            } else {
+                new AddPermissionFrame(userId).setVisible(true);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

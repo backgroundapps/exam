@@ -9,11 +9,14 @@ public class JScrollUserPanelBuilder<T> {
 
     private AbstractTableModel tableModel;
     private JTable table;
-    public JScrollUserPanelBuilder(AbstractTableModel tableModel) {
+    private ResultUserFrame resultUserFrame;
+    public JScrollUserPanelBuilder(AbstractTableModel tableModel, ResultUserFrame resultUserFrame) {
         this.tableModel = tableModel;
+        this.resultUserFrame = resultUserFrame;
     }
 
     public JScrollPane getTable(){
+        resultUserFrame.setVisible(false);
         table = new JTable(tableModel);
 
         //Set the column sorting functionality on

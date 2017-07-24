@@ -92,4 +92,12 @@ public class UserFunctionalityPermissionDAO {
         return dml.build().getResultValue() > 0;
     }
 
+    public boolean removePermissionById(Long user, Long functionality) throws SQLException {
+        dml.addSQL(deleteByUserIdAndFunctionalityId());
+        dml.preparingStatement().setLong(1, user);
+        dml.preparingStatement().setLong(2, functionality);
+        return dml.build().getResultValue() > 0;
+    }
+
+
 }

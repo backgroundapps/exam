@@ -46,6 +46,17 @@ import server.process.UserProcess;
   }
 
   @Override
+  public User findUsersById(Long id) throws RemoteException, SQLException {
+    try {
+      return new UserProcess().findById(id);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+
+    @Override
   public Boolean isValidLogin(String login) throws RemoteException, SQLException {
     try {
       return new UserProcess().isValidLogin(login);
@@ -74,6 +85,11 @@ import server.process.UserProcess;
   @Override
   public Plugin getPluginByName(String name) throws RemoteException, SQLException {
     return new PluginProcess().findByName(name);
+  }
+
+  @Override
+  public Functionality getFunctionalityByName(String name) throws RemoteException, SQLException {
+    return new FunctionalityProcess().findByName(name);
   }
 
   @Override

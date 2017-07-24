@@ -78,7 +78,7 @@ public class PluginQueries {
      * @return
      */
     public static String insert(){
-        return "INSERT INTO PLUGINS (ID, NAME, DESCRIPTION) VALUES (?, ?, ?)";
+        return "INSERT INTO PLUGINS ( NAME, DESCRIPTION) VALUES (?, ?)";
     }
 
     /**

@@ -224,7 +224,7 @@ public class SearchUserFrame extends JDialog {
             );
 
             if(data != null && data.length > 0){
-                new ResultUserFrame(data).setVisible(true);
+                new ResultUserFrame(data, null).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "DATA NOT FOUND!");
             }

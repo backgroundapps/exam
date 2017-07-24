@@ -23,6 +23,8 @@ public interface ServerInterface extends Remote {
    */
   List<User> getUsers() throws RemoteException, SQLException;
 
+  User findUsersById(Long id) throws RemoteException, SQLException;
+
   Boolean isValidLogin(String login) throws RemoteException, SQLException;
 
   Long getNumberOfUsers() throws RemoteException, SQLException;
@@ -32,6 +34,8 @@ public interface ServerInterface extends Remote {
   List<Plugin> getPlugins() throws RemoteException, SQLException;
 
   Plugin getPluginByName(String name) throws RemoteException, SQLException;
+
+  Functionality getFunctionalityByName(String name) throws RemoteException, SQLException;
 
   String[] getPluginMappedNames() throws RemoteException, SQLException;
 
