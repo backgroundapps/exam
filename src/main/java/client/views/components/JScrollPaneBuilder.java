@@ -1,9 +1,11 @@
 package client.views.components;
 
+import client.views.user.EditUserFrame;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
-public class JScrollPaneBuilder {
+public class JScrollPaneBuilder<T> {
 
     private AbstractTableModel tableModel;
     private JTable table;
@@ -23,10 +25,10 @@ public class JScrollPaneBuilder {
                 int row = table.rowAtPoint(evt.getPoint());
                 int col = table.columnAtPoint(evt.getPoint());
                 if (row >= 0 && col >= 0) {
-                    //TODO alterar para que  obuilder receba o actionlistener para passar o id selecionado
-                    JOptionPane.showMessageDialog(null, table.getValueAt(row, 0));
-
+                    new EditUserFrame((Long)table.getValueAt(row, 0)).setVisible(true);
                 }
+
+
             }
         });
 

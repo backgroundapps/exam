@@ -103,6 +103,17 @@ public class UserQueries {
                 "    AND 1 = 1";
     }
 
+    public static String countDataFromUser() {
+        return "SELECT \n" +
+                "    COUNT(*)\n" +
+                "\n" +
+                "FROM \n" +
+                "    USERS US\n" +
+                "\n" +
+                "WHERE \n" +
+                "    1 = 1";
+    }
+
     public static String selectDataFromUserFunctionalityAndPlugin(){
         return "SELECT \n" +
                 "    US.ID USER_ID, US.LOGIN LOGIN, US.FULL_NAME FULL_NAME, US.STATUS STATUS, US.CURRENT_MANAGEMENT CURRENT_MANAGEMENT,\n" +
@@ -117,5 +128,18 @@ public class UserQueries {
                 "    AND UF.FUNCTIONALITY_ID = FU.ID\n" +
                 "    AND FU.PLUGIN_ID = PL.ID\n" +
                 "    AND 1 = 1";
+    }
+
+    public static String selectDataFromUser(){
+        return "SELECT \n" +
+                "    US.ID USER_ID, US.LOGIN LOGIN, US.FULL_NAME FULL_NAME, US.STATUS STATUS, US.CURRENT_MANAGEMENT CURRENT_MANAGEMENT,\n" +
+                "    '' FUNCITONALITY_NAME, \n" +
+                "    '' PLUGIN_NAME \n" +
+                "\n" +
+                "FROM \n" +
+                "    USERS US\n" +
+                "\n" +
+                "WHERE \n" +
+                "    1 = 1";
     }
 }

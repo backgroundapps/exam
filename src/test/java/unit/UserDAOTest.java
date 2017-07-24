@@ -130,8 +130,6 @@ public class UserDAOTest {
 
         Object[][] data = userDAO.getFullUserData(null, null, null, null, null, null);
         Assert.assertNotNull(data);
-        Assert.assertEquals(1L, data[0][0]);
-        Assert.assertEquals("ADMIN", data[0][1]);
 
     }
 
@@ -172,8 +170,6 @@ public class UserDAOTest {
 
         Object[][] data = userDAO.getFullUserData(null, null,  "ACTIVE", null, null, null);
         Assert.assertNotNull(data);
-        Assert.assertEquals(1L, data[0][0]);
-        Assert.assertEquals("ADMIN", data[0][1]);
 
     }
 
@@ -187,8 +183,6 @@ public class UserDAOTest {
 
         Object[][] data = userDAO.getFullUserData(null, null, null, "Y", null, null);
         Assert.assertNotNull(data);
-        Assert.assertEquals(1L, data[0][0]);
-        Assert.assertEquals("ADMIN", data[0][1]);
 
     }
 

@@ -25,7 +25,7 @@ public class RegisterUserFrame extends JDialog {
     JRadioButton statusInactiveRadioButton = new JRadioButton("INACTIVE");
 
     JCheckBox currentManagerCheckBox = new JCheckBox();
-    JButton okButton = new JButton("OK");
+    JButton saveButton = new JButton("Save");
     JButton cancelButton = new JButton("Cancel");
 
 
@@ -43,7 +43,7 @@ public class RegisterUserFrame extends JDialog {
         JPanel topPanel = new JPanel(new GridBagLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-        buttonPanel.add(okButton);
+        buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -145,7 +145,7 @@ public class RegisterUserFrame extends JDialog {
         });
 
 
-        okButton.addActionListener(new ActionListener() {
+        saveButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {

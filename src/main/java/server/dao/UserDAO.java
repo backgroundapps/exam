@@ -25,9 +25,14 @@ public class UserDAO {
         this.dml = dml;
     }
 
+    private boolean isJustForUserInfo(String plugin, String functionality){
+        return Strings.isEmpty(plugin) && Strings.isEmpty(functionality);
+
+    }
+
     public Object[][] getFullUserData(String userLogin, String userFullName, String userStatus, String userCurrentManager, String pluginName, String functionalityName) throws SQLException {
         int count = 0;
-        StringBuilder countSQL = new StringBuilder(countDataFromUserFunctionalityAndPlugin());
+        StringBuilder countSQL = new StringBuilder(isJustForUserInfo(pluginName, functionalityName) ? countDataFromUser() : countDataFromUserFunctionalityAndPlugin());
         buildComplexWhere(userLogin, userFullName, userStatus, userCurrentManager, pluginName, functionalityName, count, countSQL);
         this.ddl.build();
 
@@ -36,7 +41,7 @@ public class UserDAO {
 
         if(lines > 0){
             count = 0;
-            StringBuilder sql = new StringBuilder(selectDataFromUserFunctionalityAndPlugin());
+            StringBuilder sql = new StringBuilder(isJustForUserInfo(pluginName, functionalityName) ? selectDataFromUser() : selectDataFromUserFunctionalityAndPlugin());
             buildComplexWhere(userLogin, userFullName, userStatus, userCurrentManager, pluginName, functionalityName, count, sql);
             this.ddl.build();
 
@@ -44,7 +49,7 @@ public class UserDAO {
 
             count = 0;
             Object[][] items = new Object[lines][7];
-            if(ddl.getResult().next()){
+            while(ddl.getResult().next()){
                 items[count] = UserFactory.getFullDataFilteredByResultSet(ddl.getResult());
                 count++;
             }

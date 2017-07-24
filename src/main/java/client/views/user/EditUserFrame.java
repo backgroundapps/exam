@@ -1,7 +1,7 @@
 package client.views.user;
 
-import client.Client;
-import client.views.components.DefaultProperties;
+import common.User;
+import common.UserImpl;
 import server.process.UserProcess;
 
 import javax.swing.*;
@@ -10,50 +10,73 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Vector;
 
-public class SearchUserFrame extends JDialog {
+public class EditUserFrame extends JDialog {
+
+    private Long userId;
+    private User user;
 
     JLabel loginLabel = new JLabel("Login : ");
     JLabel fullNameLabel = new JLabel("Full Name : ");
     JLabel statusLabel = new JLabel("Status : ");
     JLabel currentManagerLabel = new JLabel("Current Manager : ");
-    JLabel pluginsLabel = new JLabel("Plugins : ");
-    JLabel functionalitiesLabel = new JLabel("Functionalities : ");
-
 
     JTextField loginField = new JTextField();
     JTextField fullNameField = new JTextField();
-    JComboBox<String> pluginsComboBox;
-
-    JComboBox<String> functionalitiesComboBox;
 
     JRadioButton statusActiveRadioButton = new JRadioButton("ACTIVE");
     JRadioButton statusInactiveRadioButton = new JRadioButton("INACTIVE");
 
     JCheckBox currentManagerCheckBox = new JCheckBox();
-    JButton searchButton = new JButton("Search");
+    JButton deleteButton = new JButton("Remove");
+    JButton saveButton = new JButton("Save");
     JButton cancelButton = new JButton("Cancel");
 
 
-    public SearchUserFrame() {
+    public EditUserFrame(Long userId) {
+        this.userId = userId;
+
         setupUI();
         setUpListeners();
-        setSize(DefaultProperties.WIDTH_SIZE_FRAME, 300);
+        setSize(400, 220);
+
+        setUser();
+
 
     }
 
+    private void setUser(){
+        try {
+            user = new UserProcess().findById(this.userId);
+            addUserViewValues();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void addUserViewValues() {
+        loginField.setText(user.getLogin());
+        fullNameField.setText(user.getFullName());
+        if("Y".equals(user.getCurrentManagement())) currentManagerCheckBox.setSelected(true);
+
+        if("INACTIVATE".equals(user.getStatus())){
+            statusActiveRadioButton.setSelected(false);
+            statusInactiveRadioButton.setSelected(true);
+        }
+    }
+
     public void setupUI() {
-        this.setTitle("SEARCH USER");
+
+        this.setTitle("EDIT USER");
 
         JPanel topPanel = new JPanel(new GridBagLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-        buttonPanel.add(searchButton);
+        deleteButton.setBackground(Color.RED);
+        buttonPanel.add(saveButton);
+        buttonPanel.add(deleteButton);
         buttonPanel.add(cancelButton);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -116,43 +139,6 @@ public class SearchUserFrame extends JDialog {
         gbc.weightx = 1;
         topPanel.add(currentManagerCheckBox, gbc);
 
-
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 0;
-        topPanel.add(pluginsLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-        //TODO Update root method
-        Vector<String> vp = new Vector<>();
-        vp.add("");
-        vp.addAll(Arrays.asList(getPluginNames()));
-        pluginsComboBox = new JComboBox<>(vp);
-        topPanel.add(pluginsComboBox, gbc);
-
-
-
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.weightx = 0;
-        topPanel.add(functionalitiesLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-        //TODO Update root method
-        Vector<String> vf = new Vector<>();
-        vf.add("");
-        vf.addAll(Arrays.asList(getFunctionalityNames()));
-        functionalitiesComboBox = new JComboBox<>(vf);
-
-        topPanel.add(functionalitiesComboBox, gbc);
-
-
         this.add(topPanel);
 
         this.add(buttonPanel, BorderLayout.SOUTH);
@@ -168,7 +154,7 @@ public class SearchUserFrame extends JDialog {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    search();
+                    register();
                 }
             }
         });
@@ -192,78 +178,79 @@ public class SearchUserFrame extends JDialog {
         });
 
 
-        searchButton.addActionListener(new ActionListener() {
+        saveButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                search();
+                if(isValidView()){
+                    register();
+                }
+
             }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure about removing this user?", "Attention", JOptionPane.YES_NO_OPTION);
+                if(reply == JOptionPane.YES_OPTION) delete();
+            }
+
         });
 
         cancelButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                SearchUserFrame.this.setVisible(false);
+                EditUserFrame.this.setVisible(false);
             }
         });
     }
 
-
-    private void search()  {
+    private void register() {
         try {
-
-            Object[][] data = new UserProcess().getFullUserData(
+            new UserProcess().update(new UserImpl(
                     this.loginField.getText(),
                     this.fullNameField.getText(),
                     (this.statusActiveRadioButton.isSelected() ? "ACTIVE" : "INACTIVE"),
-                    (this.currentManagerCheckBox.isSelected() ? "Y" : "N"),
-                    this.pluginsComboBox.getSelectedItem().toString(),
-                    this.functionalitiesComboBox.getSelectedItem().toString()
-
-            );
-
-            if(data != null && data.length > 0){
-                new ResultUserFrame(data).setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "DATA NOT FOUND!");
-            }
-
+                    (this.currentManagerCheckBox.isSelected() ? "Y" : "N")
+            ), userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        JOptionPane.showMessageDialog(null, "Done!");
+        this.setVisible(false);
+
     }
 
-    private String[] getPluginNames(){
+    private void delete() {
         try {
+            new UserProcess().delete(userId);
 
-            return Client.getServer().getPluginMappedNames();
-
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
         }
-
-        return null;
+        JOptionPane.showMessageDialog(null, "Done!");
+        this.setVisible(false);
     }
 
-    public String[] getFunctionalityNames() {
-        try {
+    private boolean isValidView(){
+        boolean result = true;
 
-            return Client.getServer().getFunctionalityMappedNames();
-
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
-            e.printStackTrace();
+        if(this.loginField.getText().isEmpty()){
+            result = false;
+            JOptionPane.showMessageDialog(null, "Please! Inform your login");
         }
 
-        return null;
+        if(this.loginField.getText().length() > 4){
+            result = false;
+            JOptionPane.showMessageDialog(null, "Is not allowed more then 4 characters for logins");
+        }
+
+        return result;
     }
+
+
 }
