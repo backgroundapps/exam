@@ -23,6 +23,7 @@ public class JScrollPaneBuilder {
                 int row = table.rowAtPoint(evt.getPoint());
                 int col = table.columnAtPoint(evt.getPoint());
                 if (row >= 0 && col >= 0) {
+                    //TODO alterar para que  obuilder receba o actionlistener para passar o id selecionado
                     JOptionPane.showMessageDialog(null, table.getValueAt(row, 0));
 
                 }

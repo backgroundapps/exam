@@ -1,11 +1,15 @@
 package client.views.user;
 
+import common.UserImpl;
+import server.process.UserProcess;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 
 public class RegisterUserFrame extends JDialog {
 
@@ -145,7 +149,10 @@ public class RegisterUserFrame extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                register();
+                if(isValidView()){
+                    register();
+                }
+
             }
         });
 
@@ -158,16 +165,38 @@ public class RegisterUserFrame extends JDialog {
         });
     }
 
-
     private void register() {
-        StringBuilder result = new StringBuilder();
-        result.append("Login: " + this.loginField.getText());
-        result.append("\nFull Name: " + this.fullNameField.getText());
-        result.append("\nStatus: " + (this.statusActiveRadioButton.isSelected() ? "ACTIVE" : "INACTIVE"));
-        result.append("\nCurrent Manager: " + (this.currentManagerCheckBox.isSelected() ? "YES" : "NO"));
+        try {
+            new UserProcess().create(new UserImpl(
+                    this.loginField.getText(),
+                    this.fullNameField.getText(),
+                    (this.statusActiveRadioButton.isSelected() ? "ACTIVE" : "INACTIVE"),
+                    (this.currentManagerCheckBox.isSelected() ? "Y" : "N")
+            ));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-
-        JOptionPane.showMessageDialog(null, result.toString());
+        JOptionPane.showMessageDialog(null, "Done!");
+        this.setVisible(false);
 
     }
+
+    private boolean isValidView(){
+        boolean result = true;
+
+        if(this.loginField.getText().isEmpty()){
+            result = false;
+            JOptionPane.showMessageDialog(null, "Please! Inform your login");
+        }
+
+        if(this.loginField.getText().length() > 4){
+            result = false;
+            JOptionPane.showMessageDialog(null, "Is not allowed more then 4 characters for logins");
+        }
+
+        return result;
+    }
+
+
 }
